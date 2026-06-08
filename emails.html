@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Copyserv Ltd — Automated Email Map (Concept)</title>
+<style>
+  :root{
+    --blue:#34A8DD;--blue-dark:#1E8FC4;--green:#5CB947;--yellow:#F4C81E;
+    --ink:#1B1B1B;--slate:#5A6573;--line:#E7EAEF;--bg:#F4F6F9;--card:#FFFFFF;
+    --cust:#1E8FC4;--staff:#C9871A;--owner:#3F9B2E;--inst:#7A4FD0;
+    --shadow-sm:0 2px 10px rgba(20,30,50,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-mark{width:40px;height:40px;flex:none}
+  .logo-text{display:flex;flex-direction:column;line-height:1}
+  .logo-top{font-size:8px;letter-spacing:1.5px;font-weight:700;margin-bottom:2px}
+  .logo-main{font-size:25px;font-weight:800;letter-spacing:-1px}
+  .logo-main .b{color:var(--blue)}.logo-main .k{color:var(--ink)}
+  .logo-ltd{font-size:7px;font-weight:700;color:var(--slate);letter-spacing:1px;align-self:flex-end;margin-bottom:3px}
+
+  .topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+  .topbar-inner{max-width:1240px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:16px}
+  .topbar .tag{margin-left:auto;font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;background:var(--ink);padding:5px 11px;border-radius:999px}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:30px 24px 70px}
+  .head h1{font-size:30px;letter-spacing:-.6px;margin-bottom:8px}
+  .head p{color:var(--slate);font-size:15px;max-width:760px}
+  .statline{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 6px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 15px;font-size:13px;font-weight:600;box-shadow:var(--shadow-sm)}
+  .stat b{font-size:18px;color:var(--blue-dark);margin-right:5px}
+
+  .legend{display:flex;gap:22px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 18px;margin:18px 0 6px;font-size:12.5px;box-shadow:var(--shadow-sm)}
+  .legend .grp{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .legend .it{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--slate)}
+  .dot{width:11px;height:11px;border-radius:50%;flex:none}
+  .ch{font-size:11px;font-weight:700;border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--slate);background:#fff}
+  .sep{width:1px;height:18px;background:var(--line)}
+
+  .stage{margin-top:30px}
+  .stage-h{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+  .stage-n{width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;flex:none}
+  .stage-h h2{font-size:19px;letter-spacing:-.3px}
+  .stage-h span{color:var(--slate);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+
+  .email{background:#fff;border:1px solid var(--line);border-left:4px solid var(--cust);border-radius:13px;padding:16px 17px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:9px;position:relative}
+  .email.cust{border-left-color:var(--cust)}
+  .email.staff{border-left-color:var(--staff)}
+  .email.owner{border-left-color:var(--owner)}
+  .email.inst{border-left-color:var(--inst)}
+  .email .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .recip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+  .recip.cust{color:var(--cust)}.recip.staff{color:var(--staff)}.recip.owner{color:var(--owner)}.recip.inst{color:var(--inst)}
+  .channels{margin-left:auto;display:flex;gap:5px}
+  .trig{font-size:11.5px;color:var(--slate);font-weight:600}
+  .trig b{color:var(--ink);text-transform:uppercase;font-size:10px;letter-spacing:.5px;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-right:6px}
+  .subj{font-size:14.5px;font-weight:700;line-height:1.3}
+  .prev{font-size:12.5px;color:var(--slate);line-height:1.45}
+  .timing{font-size:11px;font-weight:700;color:var(--slate);margin-top:2px;display:flex;align-items:center;gap:6px}
+  .timing .pulse{width:7px;height:7px;border-radius:50%;background:var(--green)}
+
+  .flow{display:flex;justify-content:center;color:#C2C9D2;font-size:22px;margin:6px 0 -6px}
+
+  footer{max-width:1240px;margin:0 auto;padding:26px 24px;color:var(--slate);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center}
+
+  @media print{
+    body{background:#fff}
+    .topbar{position:static}
+    .email,.stat,.legend{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .cards{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15" stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15" stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="13" fill="#fff" stroke="#E7EAEF" stroke-width="2"/>
+      </svg>
+      <div class="logo-text"><span class="logo-top">PHOTOCOPY BUREAU</span><span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span></div>
+      <span class="logo-ltd">LIMITED</span>
+    </div>
+    <span class="tag">EMAIL MAP · CONCEPT</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="head">
+    <h1>Automated email &amp; message map</h1>
+    <p>Every email the AI print desk sends on its own — no staff typing required. Each one is triggered automatically by something happening to an order. The same triggers also fire <b>WhatsApp</b> and <b>SMS</b> where it makes sense, so the customer always knows what's going on.</p>
+  </div>
+
+  <div class="statline">
+    <div class="stat"><b>17</b> automated emails</div>
+    <div class="stat"><b>0</b> typed by staff</div>
+    <div class="stat"><b>4</b> recipients: customer · staff · owner · school accounts</div>
+    <div class="stat"><b>3</b> channels: email · WhatsApp · SMS</div>
+  </div>
+
+  <div class="legend">
+    <div class="grp">
+      <span class="it"><span class="dot" style="background:var(--cust)"></span>Customer</span>
+      <span class="it"><span class="dot" style="background:var(--staff)"></span>Staff</span>
+      <span class="it"><span class="dot" style="background:var(--owner)"></span>Owner</span>
+      <span class="it"><span class="dot" style="background:var(--inst)"></span>School / B2B account</span>
+    </div>
+    <span class="sep"></span>
+    <div class="grp">
+      <span class="it"><span class="ch">✉ Email</span></span>
+      <span class="it"><span class="ch">💬 WhatsApp</span></span>
+      <span class="it"><span class="ch">📱 SMS</span></span>
+    </div>
+  </div>
+
+  <!-- STAGE 1 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">1</div><h2>Order placed</h2><span>— the moment they pay</span></div>
+    <div class="cards">
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Payment succeeds</div>
+        <div class="subj">✅ Order #CS-2048 confirmed — ready by 14:30</div>
+        <div class="prev">Thanks Mark! We've got <i>Dissertation_Final.pdf</i> (142pp, spiral binding). Total €13.16 inc. VAT. We'll message you the second it's ready to collect.</div>
+        <div class="timing"><span class="pulse"></span>Instant</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Payment succeeds</div>
+        <div class="subj">🧾 Your Copyserv VAT receipt — €13.16</div>
+        <div class="prev">A proper VAT invoice (PDF attached) for your records — itemised prints, binding and any stationery, with 18% VAT shown.</div>
+        <div class="timing"><span class="pulse"></span>Instant · attachment</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Quote built but not paid</div>
+        <div class="subj">Your Copyserv quote is saved — €13.16</div>
+        <div class="prev">Didn't finish? Your job's still here. One tap to pick up where you left off and send it to print.</div>
+        <div class="timing">Saved instantly</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">▾</div>
+
+  <!-- STAGE 2 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">2</div><h2>In production</h2><span>— file checks &amp; printing</span></div>
+    <div class="cards">
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Pre-flight finds an issue</div>
+        <div class="subj">⚠️ Quick check needed on your file</div>
+        <div class="prev">Page 47 runs close to the trim edge. Tap to approve our auto-fit, or upload a corrected file — your order's paused until you choose (no charge yet).</div>
+        <div class="timing">Only if needed</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Job starts printing</div>
+        <div class="subj">🖨 Your order is now printing</div>
+        <div class="prev">Optional heads-up so they can track progress. Links straight to the live order tracker.</div>
+        <div class="timing">Optional</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">▾</div>
+
+  <!-- STAGE 3 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">3</div><h2>Ready — pickup &amp; delivery</h2><span>— the message everyone waits for</span></div>
+    <div class="cards">
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span><span class="ch">📱</span></span></div>
+        <div class="trig"><b>When</b>Job complete · collection</div>
+        <div class="subj">📦 Ready! Your locker code is 4827</div>
+        <div class="prev">Collect any time from the Copyserv smart locker at [location]. Tap the code to open, or show this at the counter. Open 24/7.</div>
+        <div class="timing"><span class="pulse"></span>Instant on completion</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Dispatched for delivery</div>
+        <div class="subj">🚚 On its way — arriving around 16:30</div>
+        <div class="prev">Your order's out for delivery across Malta &amp; Gozo. Track the driver live; we'll text when we're 5 minutes away.</div>
+        <div class="timing"><span class="pulse"></span>On dispatch</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Locker opened / delivered</div>
+        <div class="subj">✅ Collected — thanks from Copyserv!</div>
+        <div class="prev">Confirmation that the order's in their hands, with the receipt re-attached and a one-tap reorder link.</div>
+        <div class="timing">On collection</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">▾</div>
+
+  <!-- STAGE 4 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">4</div><h2>After the order</h2><span>— loyalty &amp; repeat business on autopilot</span></div>
+    <div class="cards">
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>2 hours after collection</div>
+        <div class="subj">How did we do? ⭐</div>
+        <div class="prev">A one-tap star rating. Five stars routes to a Google review; anything lower comes quietly back to you to fix.</div>
+        <div class="timing">+2 hours</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>30–60 days later</div>
+        <div class="subj">Need another set of your notes? Reprint in 1 tap</div>
+        <div class="prev">For students &amp; tutors who reprint regularly — their saved job, ready to reorder with the same settings. Pure repeat revenue.</div>
+        <div class="timing">Scheduled</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Files auto-deleted</div>
+        <div class="subj">🔒 Your files have been securely deleted</div>
+        <div class="prev">Privacy reassurance: the uploaded document has been permanently removed after fulfilment. Builds trust for sensitive prints.</div>
+        <div class="timing">After collection</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">▾</div>
+
+  <!-- STAGE 5 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">5</div><h2>Payment &amp; gentle nudges</h2><span>— recover orders that stall</span></div>
+    <div class="cards">
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Card payment fails</div>
+        <div class="subj">Payment didn't go through — here's a Revolut link</div>
+        <div class="prev">No problem — your order's held. Pay by Revolut, Apple Pay or another card with one tap and we'll start printing.</div>
+        <div class="timing">On failure</div>
+      </div>
+      <div class="email cust">
+        <div class="top"><span class="recip cust"><span class="dot" style="background:var(--cust)"></span>Customer</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Uploaded, no payment in 1h</div>
+        <div class="subj">Still want these printed? Your quote's ready</div>
+        <div class="prev">Recovers abandoned orders automatically — the file's checked, the price is set, just needs a tap to confirm.</div>
+        <div class="timing">+1 hour</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow">▾</div>
+
+  <!-- STAGE 6 -->
+  <div class="stage">
+    <div class="stage-h"><div class="stage-n">6</div><h2>Staff &amp; owner</h2><span>— only the exceptions reach a human</span></div>
+    <div class="cards">
+      <div class="email staff">
+        <div class="top"><span class="recip staff"><span class="dot" style="background:var(--staff)"></span>Staff</span><span class="channels"><span class="ch">✉</span><span class="ch">💬</span></span></div>
+        <div class="trig"><b>When</b>Order is flagged</div>
+        <div class="subj">🔎 Order #CS-2052 needs a human</div>
+        <div class="prev">380-page full textbook — possible copyright limit. Or: a custom size not on the menu. Routed to staff to approve or call the customer.</div>
+        <div class="timing">Exceptions only</div>
+      </div>
+      <div class="email staff">
+        <div class="top"><span class="recip staff"><span class="dot" style="background:var(--staff)"></span>Staff</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>Stationery runs low</div>
+        <div class="subj">📉 Low stock: A4 reams (3 left)</div>
+        <div class="prev">Fired when a shop-stock item the portal sells drops below its threshold, so the "Add to order" shelf never sells what you don't have.</div>
+        <div class="timing">On threshold</div>
+      </div>
+      <div class="email owner">
+        <div class="top"><span class="recip owner"><span class="dot" style="background:var(--owner)"></span>Owner</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>End of each day</div>
+        <div class="subj">📊 Copyserv B2C today: 47 orders, €312, 0 staff hours</div>
+        <div class="prev">Your daily one-glance summary: orders, revenue, average turnaround, % handled by AI, and anything that needed a human.</div>
+        <div class="timing">Daily · 18:00</div>
+      </div>
+      <div class="email inst">
+        <div class="top"><span class="recip inst"><span class="dot" style="background:var(--inst)"></span>School / B2B</span><span class="channels"><span class="ch">✉</span></span></div>
+        <div class="trig"><b>When</b>End of month</div>
+        <div class="subj">🧾 Your June statement — Junior College — €1,240</div>
+        <div class="prev">Invoiced accounts for schools, colleges &amp; tutors get one consolidated monthly statement instead of paying per job — your bridge into B2B.</div>
+        <div class="timing">Monthly</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo" style="transform:scale(.8);transform-origin:left">
+    <svg class="logo-mark" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15" stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15" stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      <circle cx="50" cy="50" r="13" fill="#fff" stroke="#E7EAEF" stroke-width="2"/>
+    </svg>
+    <div class="logo-text"><span class="logo-top">PHOTOCOPY BUREAU</span><span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span></div>
+  </div>
+  <span>Concept email map · subjects &amp; copy are drafts · branding © Copyserv Ltd.</span>
+</footer>
+</body>
+</html>
