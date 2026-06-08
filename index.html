@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Copyserv Ltd — Self-Service Print Portal (Concept)</title>
+<style>
+  :root{
+    --blue:#34A8DD;
+    --blue-dark:#1E8FC4;
+    --green:#5CB947;
+    --yellow:#F4C81E;
+    --ink:#1B1B1B;
+    --slate:#5A6573;
+    --line:#E7EAEF;
+    --bg:#F4F6F9;
+    --card:#FFFFFF;
+    --good:#2FA84F;
+    --warn:#E8A317;
+    --shadow:0 8px 30px rgba(20,30,50,.08);
+    --shadow-sm:0 2px 10px rgba(20,30,50,.06);
+    --r:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  /* ---------- Logo ---------- */
+  .logo{display:flex;align-items:center;gap:10px;user-select:none}
+  .logo-mark{width:42px;height:42px;flex:none}
+  .logo-text{display:flex;flex-direction:column;line-height:1}
+  .logo-top{font-size:8px;letter-spacing:1.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+  .logo-main{font-size:26px;font-weight:800;letter-spacing:-1px}
+  .logo-main .b{color:var(--blue)}
+  .logo-main .k{color:var(--ink)}
+  .logo-ltd{font-size:7px;font-weight:700;color:var(--slate);letter-spacing:1px;align-self:flex-end;margin-bottom:3px}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px}
+  .switch{margin-left:auto;display:flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px}
+  .switch button{
+    border:0;background:transparent;font:inherit;font-weight:600;font-size:13px;color:var(--slate);
+    padding:8px 16px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap;
+  }
+  .switch button.active{background:var(--ink);color:#fff}
+  .pill-live{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green)}
+  .pill-live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(92,185,71,.6);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(92,185,71,.5)}70%{box-shadow:0 0 0 8px rgba(92,185,71,0)}100%{box-shadow:0 0 0 0 rgba(92,185,71,0)}}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,#0E3A52 0%,#155E7E 55%,#1E8FC4 100%);
+    color:#fff;border-radius:24px;padding:42px 44px;position:relative;overflow:hidden;margin-bottom:26px;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,rgba(244,200,30,.35),transparent 60%),
+               radial-gradient(circle at 70% 70%,rgba(92,185,71,.35),transparent 60%);
+  }
+  .hero h1{font-size:38px;line-height:1.1;letter-spacing:-1px;max-width:620px;margin-bottom:14px;position:relative}
+  .hero p{font-size:17px;opacity:.92;max-width:520px;margin-bottom:24px;position:relative}
+  .hero .cta{display:flex;gap:12px;position:relative;flex-wrap:wrap}
+  .btn{border:0;font:inherit;font-weight:700;font-size:15px;padding:13px 22px;border-radius:12px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--yellow);color:#1B1B1B}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(244,200,30,.4)}
+  .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn-ghost:hover{background:rgba(255,255,255,.2)}
+  .trust{display:flex;gap:22px;margin-top:26px;flex-wrap:wrap;position:relative}
+  .trust span{font-size:13px;opacity:.9;display:flex;align-items:center;gap:7px}
+
+  /* ---------- Generic ---------- */
+  .grid{display:grid;gap:22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
+  .section-label{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase;margin-bottom:6px}
+  h2.title{font-size:24px;letter-spacing:-.5px;margin-bottom:4px}
+  .sub{color:var(--slate);font-size:14px;margin-bottom:20px}
+
+  /* ---------- Order builder ---------- */
+  .builder{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
+  .steps{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
+  .step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--slate)}
+  .step .num{width:24px;height:24px;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-size:12px;font-weight:700}
+  .step.done .num{background:var(--green);color:#fff;border-color:var(--green)}
+  .step.active .num{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .step .arr{color:#C7CDD6;margin:0 2px}
+
+  .panel{padding:24px}
+  .panel h3{font-size:16px;margin-bottom:4px}
+  .panel .hint{font-size:13px;color:var(--slate);margin-bottom:18px}
+
+  .drop{
+    border:2px dashed #BFE3F4;border-radius:14px;background:linear-gradient(180deg,#F4FBFE,#fff);
+    padding:26px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:18px;
+  }
+  .drop:hover{border-color:var(--blue);background:#EFF9FE}
+  .drop .ic{width:46px;height:46px;border-radius:12px;background:var(--blue);display:grid;place-items:center;margin:0 auto 10px}
+  .drop strong{display:block;font-size:15px}
+  .drop small{color:var(--slate)}
+
+  .filecard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;margin-bottom:18px}
+  .filecard .thumb{width:44px;height:54px;border-radius:6px;background:linear-gradient(160deg,#fff,#EEF2F6);border:1px solid var(--line);position:relative;flex:none;box-shadow:var(--shadow-sm)}
+  .filecard .thumb::before{content:"";position:absolute;inset:7px 7px auto 7px;height:4px;border-radius:2px;background:var(--blue);box-shadow:0 7px 0 #DDE3EA,0 14px 0 #DDE3EA,0 21px 0 #DDE3EA}
+  .filecard .meta{flex:1;min-width:0}
+  .filecard .meta b{font-size:14px}
+  .filecard .meta div{font-size:12px;color:var(--slate)}
+
+  .ai-scan{border:1px solid #D8EFCF;background:#F4FBF0;border-radius:12px;padding:14px 16px;margin-bottom:8px}
+  .ai-scan .head{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#2F7D2F;margin-bottom:8px}
+  .ai-scan ul{list-style:none;display:grid;gap:7px}
+  .ai-scan li{font-size:13px;display:flex;align-items:flex-start;gap:8px;color:#3A4A3A}
+  .ai-scan li .tick{color:var(--good);font-weight:800;flex:none}
+  .ai-scan li.warn .tick{color:var(--warn)}
+
+  .opt-group{margin-bottom:20px}
+  .opt-group > label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
+  .opt-row{display:flex;gap:9px;flex-wrap:wrap}
+  .chip{
+    border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:10px 14px;cursor:pointer;
+    font-size:13px;font-weight:600;transition:.12s;display:flex;flex-direction:column;gap:2px;min-width:84px;
+  }
+  .chip small{font-weight:500;color:var(--slate);font-size:11px}
+  .chip:hover{border-color:var(--blue)}
+  .chip.sel{border-color:var(--blue);background:#EFF8FD;box-shadow:0 0 0 3px rgba(52,168,221,.12)}
+  .chip.sel small{color:var(--blue-dark)}
+
+  .stepper{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:11px;overflow:hidden}
+  .stepper button{border:0;background:#fff;width:42px;height:42px;font-size:20px;cursor:pointer;color:var(--ink)}
+  .stepper button:hover{background:var(--bg)}
+  .stepper input{width:54px;text-align:center;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);height:42px;font:inherit;font-weight:700;font-size:15px}
+
+  /* ---------- Summary / preview rail ---------- */
+  .rail{position:sticky;top:84px;display:grid;gap:16px}
+  .preview-card{padding:20px}
+  .preview-card h4{font-size:13px;font-weight:800;letter-spacing:.5px;color:var(--slate);text-transform:uppercase;margin-bottom:14px}
+  .doc-preview{background:var(--bg);border-radius:12px;padding:22px;display:grid;place-items:center;position:relative;overflow:hidden}
+  .pages{position:relative;width:120px;height:150px}
+  .pages .pg{position:absolute;width:108px;height:142px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow-sm)}
+  .pages .pg:nth-child(1){transform:translate(10px,8px) rotate(4deg)}
+  .pages .pg:nth-child(2){transform:translate(5px,4px) rotate(-3deg)}
+  .pages .pg:nth-child(3){transform:translate(0,0)}
+  .pages .pg.front{padding:12px}
+  .pages .pg.front::before{content:"";display:block;height:8px;width:60%;background:var(--blue);border-radius:2px;margin-bottom:8px}
+  .pages .pg.front .ln{height:4px;background:#E2E7ED;border-radius:2px;margin-bottom:6px}
+  .pages .pg.front .ln.s{width:70%}
+  .badge-pages{position:absolute;bottom:10px;right:10px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px}
+
+  .price-card{padding:20px}
+  .price-line{display:flex;justify-content:space-between;font-size:13px;color:var(--slate);padding:7px 0}
+  .price-line b{color:var(--ink);font-weight:600}
+  .price-line.total{border-top:1px dashed var(--line);margin-top:6px;padding-top:14px;font-size:15px}
+  .price-line.total b{font-size:24px;color:var(--ink)}
+  .price-line.total .vat{font-size:11px;color:var(--slate);font-weight:500;display:block;text-align:right}
+  .ready-by{display:flex;align-items:center;gap:10px;background:#FFF8E1;border:1px solid #F6E2A0;border-radius:11px;padding:11px 13px;font-size:13px;margin:14px 0;font-weight:600;color:#8A6D12}
+  .pay-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .pay-row .pm{flex:1;min-width:70px;border:1px solid var(--line);border-radius:9px;padding:8px;text-align:center;font-size:11px;font-weight:700;color:var(--slate);background:#fff}
+
+  /* ---------- feature strip ---------- */
+  .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
+  .feat{padding:20px}
+  .feat .fic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px;font-size:20px}
+  .feat h4{font-size:15px;margin-bottom:5px}
+  .feat p{font-size:13px;color:var(--slate)}
+
+  /* ---------- tracker ---------- */
+  .tracker{padding:26px}
+  .track-line{display:flex;justify-content:space-between;position:relative;margin:30px 6px 10px}
+  .track-line::before{content:"";position:absolute;top:15px;left:18px;right:18px;height:3px;background:var(--line)}
+  .track-line::after{content:"";position:absolute;top:15px;left:18px;width:calc(62% - 18px);height:3px;background:var(--green)}
+  .tnode{display:flex;flex-direction:column;align-items:center;gap:9px;position:relative;z-index:2;width:90px;text-align:center}
+  .tnode .tc{width:32px;height:32px;border-radius:50%;background:#fff;border:3px solid var(--line);display:grid;place-items:center;font-size:14px}
+  .tnode.done .tc{background:var(--green);border-color:var(--green);color:#fff}
+  .tnode.active .tc{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 5px rgba(52,168,221,.18)}
+  .tnode small{font-size:12px;font-weight:600;color:var(--slate)}
+  .tnode.done small,.tnode.active small{color:var(--ink)}
+
+  /* ---------- Dashboard ---------- */
+  .hidden{display:none}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
+  .kpi{padding:20px}
+  .kpi .lbl{font-size:12px;color:var(--slate);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .kpi .val{font-size:30px;font-weight:800;letter-spacing:-1px}
+  .kpi .chg{font-size:12px;font-weight:700;margin-top:4px}
+  .kpi .chg.up{color:var(--green)}
+  .auto-banner{background:linear-gradient(120deg,#103B2A,#1E7D4F);color:#fff;border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:24px}
+  .auto-banner .big{font-size:30px;font-weight:800}
+  .auto-banner .txt{font-size:14px;opacity:.92}
+  .dash-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);padding:12px 14px;border-bottom:1px solid var(--line)}
+  tbody td{padding:13px 14px;font-size:13px;border-bottom:1px solid var(--line)}
+  tbody tr:last-child td{border-bottom:0}
+  .st{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;display:inline-block}
+  .st.queue{background:#EEF1F5;color:#5A6573}
+  .st.print{background:#E5F3FB;color:#1E8FC4}
+  .st.bind{background:#FBF1DC;color:#B5841A}
+  .st.ready{background:#E4F6E4;color:#2F8F3F}
+  .chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding:10px 4px 0}
+  .bar{flex:1;background:linear-gradient(180deg,var(--blue),#7FCDEC);border-radius:6px 6px 0 0;position:relative;transition:.3s}
+  .bar:hover{filter:brightness(1.08)}
+  .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--slate)}
+  .legend-note{font-size:12px;color:var(--slate);margin-top:30px;text-align:center}
+
+  /* ---------- AI chat ---------- */
+  .chat{position:fixed;right:24px;bottom:24px;width:340px;z-index:50;box-shadow:var(--shadow);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+  .chat-head{background:var(--ink);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+  .chat-head .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--yellow));display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px}
+  .chat-head b{font-size:14px}
+  .chat-head small{font-size:11px;opacity:.7;display:block}
+  .chat-body{background:#fff;padding:16px;display:grid;gap:10px;max-height:300px}
+  .msg{font-size:13px;padding:10px 13px;border-radius:14px;max-width:85%}
+  .msg.bot{background:var(--bg);border-bottom-left-radius:4px}
+  .msg.user{background:var(--blue);color:#fff;justify-self:end;border-bottom-right-radius:4px}
+  .msg.bot b{color:var(--ink)}
+  .chat-input{display:flex;border-top:1px solid var(--line);background:#fff}
+  .chat-input input{flex:1;border:0;padding:13px 15px;font:inherit;font-size:13px;outline:none}
+  .chat-input button{border:0;background:var(--blue);color:#fff;padding:0 16px;cursor:pointer;font-weight:700}
+
+  footer{max-width:1180px;margin:0 auto;padding:30px 22px;color:var(--slate);font-size:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .concept-tag{position:fixed;left:0;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left;background:var(--ink);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:5px 12px;border-radius:0 0 6px 6px;z-index:60}
+
+  @media(max-width:980px){
+    .builder,.dash-grid{grid-template-columns:1fr}
+    .feat-grid,.kpis{grid-template-columns:repeat(2,1fr)}
+    .rail{position:static}
+    .chat{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="concept-tag">CONCEPT MOCKUP</div>
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">
+      <svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15"
+                stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15"
+                stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="13" fill="#fff" stroke="#E7EAEF" stroke-width="2"/>
+      </svg>
+      <div class="logo-text">
+        <span class="logo-top">PHOTOCOPY BUREAU</span>
+        <span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span>
+      </div>
+      <span class="logo-ltd">LIMITED</span>
+    </div>
+
+    <div class="switch">
+      <button id="tabCustomer" class="active" onclick="showView('customer')">Customer Portal</button>
+      <button id="tabShop" onclick="showView('shop')">Shop Dashboard</button>
+    </div>
+    <div class="pill-live"><span class="dot"></span>AI Desk online</div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<!-- =====================  CUSTOMER VIEW  ======================== -->
+<!-- ============================================================= -->
+<div id="view-customer">
+  <div class="wrap">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Print anything. Skip the queue.</h1>
+      <p>Upload your file, choose your finish, pay online and get a text the second it's ready for pickup. No waiting at the counter — Copyserv's AI desk handles it 24/7.</p>
+      <div class="cta">
+        <button class="btn btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">📄 Start your order</button>
+        <button class="btn btn-ghost">Track an existing order</button>
+      </div>
+      <div class="trust">
+        <span>⚡ Instant AI price quote</span>
+        <span>🔍 Free file health check</span>
+        <span>📲 WhatsApp & SMS updates</span>
+        <span>💳 Card · Revolut · Apple Pay</span>
+      </div>
+    </div>
+
+    <!-- ORDER BUILDER -->
+    <div id="builder">
+      <div class="section-label">Self-service ordering</div>
+      <h2 class="title">Build your print job</h2>
+      <p class="sub">Everything the front desk used to ask — now answered by the customer in 60 seconds.</p>
+
+      <div class="steps">
+        <div class="step done"><span class="num">✓</span> Upload</div><span class="arr">›</span>
+        <div class="step active"><span class="num">2</span> Configure</div><span class="arr">›</span>
+        <div class="step"><span class="num">3</span> Preview &amp; approve</div><span class="arr">›</span>
+        <div class="step"><span class="num">4</span> Pay</div>
+      </div>
+
+      <div class="builder">
+        <!-- LEFT: config -->
+        <div class="card panel">
+          <div class="filecard">
+            <div class="thumb"></div>
+            <div class="meta">
+              <b>Dissertation_Final.pdf</b>
+              <div>4.2 MB · uploaded just now</div>
+            </div>
+            <span class="st ready">Print-ready ✓</span>
+          </div>
+
+          <div class="ai-scan">
+            <div class="head">🤖 AI file check complete</div>
+            <ul>
+              <li><span class="tick">✓</span> Detected <b>&nbsp;142 pages</b>&nbsp; — 124 black &amp; white, 18 colour</li>
+              <li><span class="tick">✓</span> A4 · all fonts embedded · 300 dpi images</li>
+              <li class="warn"><span class="tick">⚠</span> Page 47 has text near the trim edge — we'll auto-scale 2% to fit</li>
+              <li><span class="tick">✓</span> No blank or duplicate pages found</li>
+            </ul>
+          </div>
+
+          <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+
+          <div class="opt-group">
+            <label>Colour</label>
+            <div class="opt-row" data-group="colour">
+              <div class="chip sel" data-v="auto" data-meta="Detected mix">Auto (mixed)<small>18 colour pages</small></div>
+              <div class="chip" data-v="bw" data-meta="All B&amp;W">All B&amp;W<small>cheapest</small></div>
+              <div class="chip" data-v="colour" data-meta="All colour">All colour<small>premium</small></div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <label>Sides</label>
+            <div class="opt-row" data-group="sides">
+              <div class="chip sel" data-v="double">Double-sided<small>save paper</small></div>
+              <div class="chip" data-v="single">Single-sided</div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <label>Paper</label>
+            <div class="opt-row" data-group="paper">
+              <div class="chip sel" data-v="80" data-add="0">80 gsm<small>standard</small></div>
+              <div class="chip" data-v="100" data-add="0.02">100 gsm<small>+€0.02/pg</small></div>
+              <div class="chip" data-v="160" data-add="0.06">160 gsm card<small>+€0.06/pg</small></div>
+            </div>
+          </div>
+
+          <div class="opt-group">
+            <label>Binding</label>
+            <div class="opt-row" data-group="binding">
+              <div class="chip" data-v="none" data-add="0">Loose<small>€0</small></div>
+              <div class="chip" data-v="staple" data-add="0.30">Stapled<small>€0.30</small></div>
+              <div class="chip" data-v="comb" data-add="2.00">Comb<small>€2.00</small></div>
+              <div class="chip sel" data-v="spiral" data-add="2.50">Spiral<small>€2.50</small></div>
+              <div class="chip" data-v="thermal" data-add="3.50">Thermal hardback<small>€3.50</small></div>
+            </div>
+          </div>
+
+          <div class="opt-group" style="display:flex;justify-content:space-between;align-items:center">
+            <label style="margin:0">Number of copies</label>
+            <div class="stepper">
+              <button onclick="bump(-1)">−</button>
+              <input id="copies" value="1" readonly>
+              <button onclick="bump(1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: preview + price -->
+        <div class="rail">
+          <div class="card preview-card">
+            <h4>Live preview</h4>
+            <div class="doc-preview">
+              <div class="pages">
+                <div class="pg"></div>
+                <div class="pg"></div>
+                <div class="pg front"><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div>
+              </div>
+              <span class="badge-pages" id="badgePages">142 pp · A4</span>
+            </div>
+          </div>
+
+          <div class="card price-card">
+            <div class="price-line"><span id="lblPages">Printing (142 pp × 1)</span><b id="cPages">€10.66</b></div>
+            <div class="price-line"><span id="lblPaper">Paper — 80 gsm</span><b id="cPaper">included</b></div>
+            <div class="price-line"><span id="lblBind">Binding — Spiral</span><b id="cBind">€2.50</b></div>
+            <div class="price-line total"><span>Total<span class="vat">incl. 18% VAT</span></span><b id="cTotal">€13.16</b></div>
+
+            <div class="ready-by">🕒 <span>Ready for pickup by <b id="readyBy">14:30 today</b></span></div>
+
+            <button class="btn btn-primary" style="width:100%;justify-content:center">Pay &amp; send to print →</button>
+            <div class="pay-row">
+              <div class="pm">💳 Card</div>
+              <div class="pm">Revolut</div>
+              <div class="pm"> Pay</div>
+              <div class="pm">At pickup</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURE STRIP -->
+    <div class="feat-grid">
+      <div class="card feat">
+        <div class="fic" style="background:#EAF7E5;color:#3F9B2E">🤖</div>
+        <h4>AI order desk</h4>
+        <p>Answers questions, quotes prices and takes orders by chat or WhatsApp — no staff needed.</p>
+      </div>
+      <div class="card feat">
+        <div class="fic" style="background:#E5F3FB;color:#1E8FC4">🔍</div>
+        <h4>Auto pre-flight</h4>
+        <p>Every file is checked for resolution, fonts and bleed before it prints — no wasted reprints.</p>
+      </div>
+      <div class="card feat">
+        <div class="fic" style="background:#FBF3DC;color:#B5841A">🔐</div>
+        <h4>Pickup lockers</h4>
+        <p>Collect with a one-time code from a smart locker, any time — even when the shop is shut.</p>
+      </div>
+      <div class="card feat">
+        <div class="fic" style="background:#F0E9FB;color:#7A4FD0">🔁</div>
+        <h4>1-tap reorder</h4>
+        <p>Students &amp; tutors re-print saved notes in seconds. Repeat business on autopilot.</p>
+      </div>
+    </div>
+
+    <!-- TRACKER -->
+    <div class="card tracker" style="margin-top:26px">
+      <div class="section-label">Order #CS-2048</div>
+      <h2 class="title" style="font-size:20px">Your order is being printed</h2>
+      <div class="track-line">
+        <div class="tnode done"><div class="tc">✓</div><small>Received</small></div>
+        <div class="tnode done"><div class="tc">✓</div><small>In queue</small></div>
+        <div class="tnode active"><div class="tc">🖨</div><small>Printing</small></div>
+        <div class="tnode"><div class="tc">📕</div><small>Binding</small></div>
+        <div class="tnode"><div class="tc">📦</div><small>Ready</small></div>
+      </div>
+      <p class="sub" style="text-align:center;margin:18px 0 0">We'll WhatsApp you the locker code the moment it's ready — estimated <b>14:30 today</b>.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<!-- ======================  SHOP VIEW  =========================== -->
+<!-- ============================================================= -->
+<div id="view-shop" class="hidden">
+  <div class="wrap">
+    <div class="section-label">Owner view</div>
+    <h2 class="title">B2C control desk</h2>
+    <p class="sub">The whole walk-in counter, running itself. You just print and bind what lands in the queue.</p>
+
+    <div class="auto-banner">
+      <div class="big">0 hrs</div>
+      <div class="txt"><b>Staff time spent on B2C today.</b><br>47 walk-in-type orders captured, quoted, paid and queued automatically — your team stayed on the big B2B jobs.</div>
+    </div>
+
+    <div class="kpis">
+      <div class="card kpi"><div class="lbl">📦 Orders today</div><div class="val">47</div><div class="chg up">▲ 32% vs last Mon</div></div>
+      <div class="card kpi"><div class="lbl">💶 Revenue today</div><div class="val">€312</div><div class="chg up">▲ 28% · avg €6.65</div></div>
+      <div class="card kpi"><div class="lbl">⏱ Avg turnaround</div><div class="val">38<span style="font-size:15px"> min</span></div><div class="chg up">▼ from 2h queue</div></div>
+      <div class="card kpi"><div class="lbl">🤖 Handled by AI</div><div class="val">94%</div><div class="chg up">3 jobs flagged to staff</div></div>
+    </div>
+
+    <div class="dash-grid">
+      <!-- queue -->
+      <div class="card" style="padding:6px 6px 0">
+        <div style="padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:center">
+          <b style="font-size:15px">Live print queue</b>
+          <span class="pill-live"><span class="dot"></span>auto-sorted by pickup time</span>
+        </div>
+        <table>
+          <thead><tr><th>Order</th><th>Job</th><th>Pages</th><th>Ready by</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><b>#CS-2048</b><br><small style="color:var(--slate)">M. Borg</small></td><td>Dissertation · spiral</td><td>142</td><td>14:30</td><td><span class="st print">Printing</span></td></tr>
+            <tr><td><b>#CS-2049</b><br><small style="color:var(--slate)">Junior College</small></td><td>Lecture notes ×30</td><td>24</td><td>15:00</td><td><span class="st queue">In queue</span></td></tr>
+            <tr><td><b>#CS-2050</b><br><small style="color:var(--slate)">A. Vella</small></td><td>CV · 160gsm card</td><td>2</td><td>13:45</td><td><span class="st bind">Binding</span></td></tr>
+            <tr><td><b>#CS-2051</b><br><small style="color:var(--slate)">St Aloysius</small></td><td>Exam papers ×120</td><td>8</td><td>16:30</td><td><span class="st queue">In queue</span></td></tr>
+            <tr><td><b>#CS-2047</b><br><small style="color:var(--slate)">R. Camilleri</small></td><td>Wedding invites</td><td>1</td><td>Ready</td><td><span class="st ready">In locker</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- chart + flags -->
+      <div class="grid">
+        <div class="card" style="padding:20px">
+          <b style="font-size:15px">Orders by hour</b>
+          <div class="chart">
+            <div class="bar" style="height:30%"><span>8a</span></div>
+            <div class="bar" style="height:55%"><span>9a</span></div>
+            <div class="bar" style="height:80%"><span>10a</span></div>
+            <div class="bar" style="height:65%"><span>11a</span></div>
+            <div class="bar" style="height:95%"><span>12p</span></div>
+            <div class="bar" style="height:70%"><span>1p</span></div>
+            <div class="bar" style="height:45%"><span>2p</span></div>
+            <div class="bar" style="height:60%"><span>3p</span></div>
+          </div>
+          <p class="legend-note">Capacity-aware quoting auto-pushes promised times out at the 12pm rush — no overpromising.</p>
+        </div>
+        <div class="card" style="padding:20px">
+          <b style="font-size:15px">Needs a human (3)</b>
+          <div style="margin-top:12px;display:grid;gap:10px">
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2052</b> — 380-page full textbook. Possible copyright limit — review before printing.</span></div>
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2046</b> — customer asked for a custom A1 poster size not in the menu.</span></div>
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2044</b> — payment failed twice; AI sent a Revolut link, awaiting.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI CHAT WIDGET -->
+<div class="chat">
+  <div class="chat-head">
+    <div class="av">C</div>
+    <div><b>Copyserv AI Desk</b><small>Typically replies instantly</small></div>
+  </div>
+  <div class="chat-body">
+    <div class="msg bot">Hi! 👋 Drop your file here or tell me what you need printed.</div>
+    <div class="msg user">200-page dissertation, hard binding, by tomorrow morning?</div>
+    <div class="msg bot">Done! 200 pp B&amp;W + thermal hardback = <b>€13.50</b>. Upload now and it'll be in your pickup locker by <b>11:00 tomorrow</b>. Want me to start it?</div>
+  </div>
+  <div class="chat-input">
+    <input placeholder="Type a message…" readonly>
+    <button>➤</button>
+  </div>
+</div>
+
+<footer>
+  <div class="logo" style="transform:scale(.8);transform-origin:left">
+    <svg class="logo-mark" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15" stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15" stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      <circle cx="50" cy="50" r="13" fill="#fff" stroke="#E7EAEF" stroke-width="2"/>
+    </svg>
+    <div class="logo-text"><span class="logo-top">PHOTOCOPY BUREAU</span><span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span></div>
+  </div>
+  <span>Concept mockup · not a live system · branding © Copyserv Ltd.</span>
+</footer>
+
+<script>
+  /* ---- view switch ---- */
+  function showView(v){
+    document.getElementById('view-customer').classList.toggle('hidden', v!=='customer');
+    document.getElementById('view-shop').classList.toggle('hidden', v!=='shop');
+    document.getElementById('tabCustomer').classList.toggle('active', v==='customer');
+    document.getElementById('tabShop').classList.toggle('active', v==='shop');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  /* ---- pricing model ---- */
+  const BASE={bw:0.05, colour:0.25};
+  const TOTAL_PAGES=142, COLOUR_PAGES=18;
+  const state={colour:'auto', sides:'double', paper:'80', paperAdd:0, binding:'spiral', bindAdd:2.50, copies:1};
+
+  function pagesCost(){
+    let bwPages, colPages;
+    if(state.colour==='auto'){ colPages=COLOUR_PAGES; bwPages=TOTAL_PAGES-COLOUR_PAGES; }
+    else if(state.colour==='bw'){ colPages=0; bwPages=TOTAL_PAGES; }
+    else { colPages=TOTAL_PAGES; bwPages=0; }
+    let per = bwPages*BASE.bw + colPages*BASE.colour;
+    per += TOTAL_PAGES*state.paperAdd;            // paper surcharge per page
+    return per;
+  }
+  const fmt=n=>'€'+n.toFixed(2);
+
+  function recalc(){
+    const printing = pagesCost()*state.copies;
+    const binding  = state.bindAdd*state.copies;
+    const net      = printing + binding;
+    const total    = net*1.18;                    // 18% VAT (Malta)
+
+    document.getElementById('lblPages').textContent = `Printing (${TOTAL_PAGES} pp × ${state.copies})`;
+    document.getElementById('cPages').textContent   = fmt(printing);
+    const paperLbl = {'80':'80 gsm','100':'100 gsm','160':'160 gsm card'}[state.paper];
+    document.getElementById('lblPaper').textContent = 'Paper — '+paperLbl;
+    document.getElementById('cPaper').textContent   = state.paperAdd? fmt(TOTAL_PAGES*state.paperAdd*state.copies):'included';
+    const bindLbl = {none:'Loose',staple:'Stapled',comb:'Comb',spiral:'Spiral',thermal:'Thermal hardback'}[state.binding];
+    document.getElementById('lblBind').textContent  = 'Binding — '+bindLbl;
+    document.getElementById('cBind').textContent    = state.bindAdd? fmt(binding):'—';
+    document.getElementById('cTotal').textContent   = fmt(total);
+    document.getElementById('badgePages').textContent = `${TOTAL_PAGES} pp · A4`;
+
+    // simple capacity-aware "ready by"
+    const mins = 25 + state.copies*4 + (state.binding==='thermal'?40:state.binding==='spiral'?15:5);
+    const t=new Date(2026,5,8,13,5); t.setMinutes(t.getMinutes()+mins);
+    let hh=t.getHours(), mm=String(t.getMinutes()).padStart(2,'0');
+    document.getElementById('readyBy').textContent = `${hh}:${mm} today`;
+  }
+
+  /* ---- chip selection ---- */
+  document.querySelectorAll('.opt-row').forEach(row=>{
+    row.addEventListener('click',e=>{
+      const chip=e.target.closest('.chip'); if(!chip) return;
+      row.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
+      chip.classList.add('sel');
+      const g=row.dataset.group, v=chip.dataset.v;
+      if(g==='colour') state.colour=v;
+      if(g==='sides')  state.sides=v;
+      if(g==='paper'){ state.paper=v; state.paperAdd=parseFloat(chip.dataset.add); }
+      if(g==='binding'){ state.binding=v; state.bindAdd=parseFloat(chip.dataset.add); }
+      recalc();
+    });
+  });
+
+  function bump(d){
+    state.copies=Math.max(1,Math.min(99,state.copies+d));
+    document.getElementById('copies').value=state.copies;
+    recalc();
+  }
+
+  recalc();
+</script>
+</body>
+</html>
