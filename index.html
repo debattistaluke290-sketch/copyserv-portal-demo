@@ -5,66 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Copyserv Ltd — Self-Service Print Portal (Concept)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root{
-    --blue:#34A8DD;
-    --blue-dark:#1E8FC4;
-    --green:#5CB947;
-    --yellow:#F4C81E;
-    --ink:#1B1B1B;
-    --slate:#5A6573;
-    --line:#E7EAEF;
-    --bg:#F4F6F9;
-    --card:#FFFFFF;
-    --good:#2FA84F;
-    --warn:#E8A317;
-    --shadow:0 8px 30px rgba(20,30,50,.08);
-    --shadow-sm:0 2px 10px rgba(20,30,50,.06);
-    --r:16px;
+    --blue:#34A8DD;--blue-dark:#1E8FC4;--green:#5CB947;--yellow:#F4C81E;
+    --ink:#1B1B1B;--slate:#5A6573;--line:#E7EAEF;--bg:#F4F6F9;--card:#FFFFFF;
+    --good:#2FA84F;--warn:#E8A317;--shadow:0 8px 30px rgba(20,30,50,.08);
+    --shadow-sm:0 2px 10px rgba(20,30,50,.06);--r:16px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{
-    font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased;
-  }
-  /* ---------- Logo ---------- */
+  body{font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+
+  /* Logo */
   .logo{display:flex;align-items:center;gap:10px;user-select:none}
   .logo-mark{width:42px;height:42px;flex:none}
   .logo-text{display:flex;flex-direction:column;line-height:1}
   .logo-top{font-size:8px;letter-spacing:1.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
   .logo-main{font-size:26px;font-weight:800;letter-spacing:-1px}
-  .logo-main .b{color:var(--blue)}
-  .logo-main .k{color:var(--ink)}
+  .logo-main .b{color:var(--blue)}.logo-main .k{color:var(--ink)}
   .logo-ltd{font-size:7px;font-weight:700;color:var(--slate);letter-spacing:1px;align-self:flex-end;margin-bottom:3px}
 
-  /* ---------- Top bar ---------- */
-  .topbar{
-    position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);
-  }
+  /* Top bar */
+  .topbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
   .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:18px}
-  .switch{margin-left:auto;display:flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px}
-  .switch button{
-    border:0;background:transparent;font:inherit;font-weight:600;font-size:13px;color:var(--slate);
-    padding:8px 16px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap;
-  }
+  .switch-wrap{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .switch-lbl{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--slate);text-transform:uppercase;text-align:right;line-height:1.2}
+  .switch{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:4px}
+  .switch button{border:0;background:transparent;font:inherit;font-weight:600;font-size:13px;color:var(--slate);padding:8px 15px;border-radius:999px;cursor:pointer;transition:.15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
   .switch button.active{background:var(--ink);color:#fff}
   .pill-live{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--green)}
-  .pill-live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(92,185,71,.6);animation:pulse 2s infinite}
+  .pill-live .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(92,185,71,.5)}70%{box-shadow:0 0 0 8px rgba(92,185,71,0)}100%{box-shadow:0 0 0 0 rgba(92,185,71,0)}}
 
-  .wrap{max-width:1180px;margin:0 auto;padding:26px 22px 80px}
+  /* Demo strip */
+  .demo-strip{background:#FFF8E1;border-bottom:1px solid #F4E4A8;color:#8A6D12;font-size:12.5px;font-weight:600;text-align:center;padding:8px 16px}
+  .demo-strip b{color:#6B5400}
 
-  /* ---------- Hero ---------- */
-  .hero{
-    background:linear-gradient(135deg,#0E3A52 0%,#155E7E 55%,#1E8FC4 100%);
-    color:#fff;border-radius:24px;padding:42px 44px;position:relative;overflow:hidden;margin-bottom:26px;
-  }
-  .hero::after{
-    content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%,rgba(244,200,30,.35),transparent 60%),
-               radial-gradient(circle at 70% 70%,rgba(92,185,71,.35),transparent 60%);
-  }
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 22px 70px}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,#0E3A52,#155E7E 55%,#1E8FC4);color:#fff;border-radius:24px;padding:42px 44px;position:relative;overflow:hidden;margin-bottom:26px}
+  .hero::after{content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(244,200,30,.35),transparent 60%),radial-gradient(circle at 70% 70%,rgba(92,185,71,.35),transparent 60%)}
   .hero h1{font-size:38px;line-height:1.1;letter-spacing:-1px;max-width:620px;margin-bottom:14px;position:relative}
   .hero p{font-size:17px;opacity:.92;max-width:520px;margin-bottom:24px;position:relative}
   .hero .cta{display:flex;gap:12px;position:relative;flex-wrap:wrap}
@@ -76,14 +57,12 @@
   .trust{display:flex;gap:22px;margin-top:26px;flex-wrap:wrap;position:relative}
   .trust span{font-size:13px;opacity:.9;display:flex;align-items:center;gap:7px}
 
-  /* ---------- Generic ---------- */
-  .grid{display:grid;gap:22px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-sm)}
   .section-label{font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase;margin-bottom:6px}
   h2.title{font-size:24px;letter-spacing:-.5px;margin-bottom:4px}
   .sub{color:var(--slate);font-size:14px;margin-bottom:20px}
 
-  /* ---------- Order builder ---------- */
+  /* Builder */
   .builder{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
   .steps{display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap}
   .step{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--slate)}
@@ -93,83 +72,97 @@
   .step .arr{color:#C7CDD6;margin:0 2px}
 
   .panel{padding:24px}
-  .panel h3{font-size:16px;margin-bottom:4px}
-  .panel .hint{font-size:13px;color:var(--slate);margin-bottom:18px}
-
-  .drop{
-    border:2px dashed #BFE3F4;border-radius:14px;background:linear-gradient(180deg,#F4FBFE,#fff);
-    padding:26px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:18px;
-  }
-  .drop:hover{border-color:var(--blue);background:#EFF9FE}
-  .drop .ic{width:46px;height:46px;border-radius:12px;background:var(--blue);display:grid;place-items:center;margin:0 auto 10px}
+  .drop{border:2px dashed #BFE3F4;border-radius:14px;background:linear-gradient(180deg,#F4FBFE,#fff);padding:24px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:16px}
+  .drop:hover,.drop.drag{border-color:var(--blue);background:#EFF9FE}
+  .drop .ic{width:46px;height:46px;border-radius:12px;background:var(--blue);display:grid;place-items:center;margin:0 auto 10px;color:#fff;font-size:22px}
   .drop strong{display:block;font-size:15px}
   .drop small{color:var(--slate)}
 
-  .filecard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;margin-bottom:18px}
-  .filecard .thumb{width:44px;height:54px;border-radius:6px;background:linear-gradient(160deg,#fff,#EEF2F6);border:1px solid var(--line);position:relative;flex:none;box-shadow:var(--shadow-sm)}
-  .filecard .thumb::before{content:"";position:absolute;inset:7px 7px auto 7px;height:4px;border-radius:2px;background:var(--blue);box-shadow:0 7px 0 #DDE3EA,0 14px 0 #DDE3EA,0 21px 0 #DDE3EA}
+  .filecard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;margin-bottom:16px}
+  .filecard .thumb{width:40px;height:50px;border-radius:6px;background:linear-gradient(160deg,#fff,#EEF2F6);border:1px solid var(--line);position:relative;flex:none;box-shadow:var(--shadow-sm)}
+  .filecard .thumb::before{content:"PDF";position:absolute;inset:auto 0 6px 0;text-align:center;font-size:8px;font-weight:800;color:var(--blue)}
   .filecard .meta{flex:1;min-width:0}
-  .filecard .meta b{font-size:14px}
+  .filecard .meta b{font-size:14px;word-break:break-all}
   .filecard .meta div{font-size:12px;color:var(--slate)}
 
-  .ai-scan{border:1px solid #D8EFCF;background:#F4FBF0;border-radius:12px;padding:14px 16px;margin-bottom:8px}
+  .ai-scan{border:1px solid #D8EFCF;background:#F4FBF0;border-radius:12px;padding:14px 16px}
   .ai-scan .head{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13px;color:#2F7D2F;margin-bottom:8px}
   .ai-scan ul{list-style:none;display:grid;gap:7px}
   .ai-scan li{font-size:13px;display:flex;align-items:flex-start;gap:8px;color:#3A4A3A}
   .ai-scan li .tick{color:var(--good);font-weight:800;flex:none}
   .ai-scan li.warn .tick{color:var(--warn)}
 
-  .opt-group{margin-bottom:20px}
-  .opt-group > label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
+  .opt-group{margin-bottom:18px}
+  .opt-group>label{display:block;font-size:13px;font-weight:700;margin-bottom:9px}
   .opt-row{display:flex;gap:9px;flex-wrap:wrap}
-  .chip{
-    border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:10px 14px;cursor:pointer;
-    font-size:13px;font-weight:600;transition:.12s;display:flex;flex-direction:column;gap:2px;min-width:84px;
-  }
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;transition:.12s;display:flex;flex-direction:column;gap:2px;min-width:80px}
   .chip small{font-weight:500;color:var(--slate);font-size:11px}
   .chip:hover{border-color:var(--blue)}
   .chip.sel{border-color:var(--blue);background:#EFF8FD;box-shadow:0 0 0 3px rgba(52,168,221,.12)}
   .chip.sel small{color:var(--blue-dark)}
-
   .stepper{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:11px;overflow:hidden}
-  .stepper button{border:0;background:#fff;width:42px;height:42px;font-size:20px;cursor:pointer;color:var(--ink)}
+  .stepper button{border:0;background:#fff;width:40px;height:42px;font-size:20px;cursor:pointer;color:var(--ink)}
   .stepper button:hover{background:var(--bg)}
-  .stepper input{width:54px;text-align:center;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);height:42px;font:inherit;font-weight:700;font-size:15px}
+  .stepper input{width:50px;text-align:center;border:0;border-left:1px solid var(--line);border-right:1px solid var(--line);height:42px;font:inherit;font-weight:700;font-size:15px}
 
-  /* ---------- Summary / preview rail ---------- */
-  .rail{position:sticky;top:84px;display:grid;gap:16px}
+  /* Rail */
+  .rail{position:sticky;top:92px;display:grid;gap:16px}
   .preview-card{padding:20px}
-  .preview-card h4{font-size:13px;font-weight:800;letter-spacing:.5px;color:var(--slate);text-transform:uppercase;margin-bottom:14px}
-  .doc-preview{background:var(--bg);border-radius:12px;padding:22px;display:grid;place-items:center;position:relative;overflow:hidden}
+  .preview-card h4{font-size:13px;font-weight:800;letter-spacing:.5px;color:var(--slate);text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+  .doc-preview{background:var(--bg);border-radius:12px;padding:18px;display:grid;place-items:center;position:relative;min-height:180px}
   .pages{position:relative;width:120px;height:150px}
   .pages .pg{position:absolute;width:108px;height:142px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow-sm)}
   .pages .pg:nth-child(1){transform:translate(10px,8px) rotate(4deg)}
   .pages .pg:nth-child(2){transform:translate(5px,4px) rotate(-3deg)}
-  .pages .pg:nth-child(3){transform:translate(0,0)}
-  .pages .pg.front{padding:12px}
-  .pages .pg.front::before{content:"";display:block;height:8px;width:60%;background:var(--blue);border-radius:2px;margin-bottom:8px}
-  .pages .pg.front .ln{height:4px;background:#E2E7ED;border-radius:2px;margin-bottom:6px}
-  .pages .pg.front .ln.s{width:70%}
-  .badge-pages{position:absolute;bottom:10px;right:10px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px}
+  .pages .pg:nth-child(3){transform:translate(0,0);padding:12px}
+  .pages .pg:nth-child(3)::before{content:"";display:block;height:8px;width:60%;background:var(--blue);border-radius:2px;margin-bottom:8px}
+  #pdfCanvas{max-width:100%;border-radius:6px;box-shadow:var(--shadow);display:none;background:#fff}
+  .badge-pages{position:absolute;bottom:8px;right:8px;background:var(--ink);color:#fff;font-size:11px;font-weight:700;padding:5px 9px;border-radius:8px}
+  .page-nav{display:none;align-items:center;justify-content:center;gap:14px;margin-top:12px;font-size:13px;font-weight:600;color:var(--slate)}
+  .page-nav button{border:1px solid var(--line);background:#fff;width:32px;height:32px;border-radius:9px;cursor:pointer;font-size:16px}
+  .page-nav button:disabled{opacity:.35;cursor:default}
 
   .price-card{padding:20px}
-  .price-line{display:flex;justify-content:space-between;font-size:13px;color:var(--slate);padding:7px 0}
+  .price-line{display:flex;justify-content:space-between;font-size:13px;color:var(--slate);padding:6px 0;gap:10px}
   .price-line b{color:var(--ink);font-weight:600}
   .price-line.total{border-top:1px dashed var(--line);margin-top:6px;padding-top:14px;font-size:15px}
-  .price-line.total b{font-size:24px;color:var(--ink)}
+  .price-line.total b{font-size:24px}
   .price-line.total .vat{font-size:11px;color:var(--slate);font-weight:500;display:block;text-align:right}
-  .ready-by{display:flex;align-items:center;gap:10px;background:#FFF8E1;border:1px solid #F6E2A0;border-radius:11px;padding:11px 13px;font-size:13px;margin:14px 0;font-weight:600;color:#8A6D12}
+  .fulfil{display:flex;gap:8px;margin:6px 0 12px}
+  .fulfil .chip{flex:1;align-items:center;text-align:center}
+  .ready-by{display:flex;align-items:center;gap:10px;background:#FFF8E1;border:1px solid #F6E2A0;border-radius:11px;padding:11px 13px;font-size:13px;margin:12px 0;font-weight:600;color:#8A6D12}
   .pay-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-  .pay-row .pm{flex:1;min-width:70px;border:1px solid var(--line);border-radius:9px;padding:8px;text-align:center;font-size:11px;font-weight:700;color:var(--slate);background:#fff}
+  .pay-row .pm{flex:1;min-width:60px;border:1px solid var(--line);border-radius:9px;padding:8px;text-align:center;font-size:11px;font-weight:700;color:var(--slate)}
 
-  /* ---------- feature strip ---------- */
+  /* Stock / add to order */
+  .stock-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .stock-card{border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;background:#fff;transition:.15s;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .stock-card.in{border-color:var(--blue);box-shadow:0 0 0 3px rgba(52,168,221,.1)}
+  .stock-card .em{font-size:30px}
+  .stock-card .nm{font-size:13px;font-weight:700;line-height:1.2;min-height:32px;display:flex;align-items:center}
+  .stock-card .pr{font-size:13px;color:var(--slate);font-weight:600;margin-bottom:6px}
+  .add-btn{border:1.5px solid var(--blue);background:#EFF8FD;color:var(--blue-dark);font:inherit;font-weight:700;font-size:13px;border-radius:9px;padding:8px 0;width:100%;cursor:pointer}
+  .add-btn:hover{background:var(--blue);color:#fff}
+  .qty{display:flex;align-items:center;justify-content:center;gap:0;border:1.5px solid var(--blue);border-radius:9px;overflow:hidden;width:100%}
+  .qty button{border:0;background:#EFF8FD;color:var(--blue-dark);width:34px;height:34px;font-size:18px;cursor:pointer}
+  .qty span{flex:1;font-weight:800;font-size:14px}
+
+  /* Feature strip */
   .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:30px}
   .feat{padding:20px}
   .feat .fic{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px;font-size:20px}
-  .feat h4{font-size:15px;margin-bottom:5px}
-  .feat p{font-size:13px;color:var(--slate)}
+  .feat h4{font-size:15px;margin-bottom:5px}.feat p{font-size:13px;color:var(--slate)}
 
-  /* ---------- tracker ---------- */
+  /* FAQ */
+  .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  details.faq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden}
+  details.faq summary{list-style:none;cursor:pointer;padding:16px 18px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq summary::after{content:"+";font-size:20px;color:var(--blue);font-weight:400}
+  details.faq[open] summary::after{content:"–"}
+  details.faq .ans{padding:0 18px 16px;font-size:13.5px;color:var(--slate)}
+
+  /* Tracker */
   .tracker{padding:26px}
   .track-line{display:flex;justify-content:space-between;position:relative;margin:30px 6px 10px}
   .track-line::before{content:"";position:absolute;top:15px;left:18px;right:18px;height:3px;background:var(--line)}
@@ -181,176 +174,170 @@
   .tnode small{font-size:12px;font-weight:600;color:var(--slate)}
   .tnode.done small,.tnode.active small{color:var(--ink)}
 
-  /* ---------- Dashboard ---------- */
+  /* Dashboard */
   .hidden{display:none}
+  .staff-banner{background:linear-gradient(120deg,#3a2410,#7a4a12);color:#fff;border-radius:16px;padding:16px 22px;display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .staff-banner .lk{font-size:26px;flex:none}
+  .staff-banner .t{font-size:13.5px;opacity:.95}.staff-banner .t b{color:#fff}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
   .kpi{padding:20px}
   .kpi .lbl{font-size:12px;color:var(--slate);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
   .kpi .val{font-size:30px;font-weight:800;letter-spacing:-1px}
-  .kpi .chg{font-size:12px;font-weight:700;margin-top:4px}
-  .kpi .chg.up{color:var(--green)}
+  .kpi .chg{font-size:12px;font-weight:700;margin-top:4px}.kpi .chg.up{color:var(--green)}
   .auto-banner{background:linear-gradient(120deg,#103B2A,#1E7D4F);color:#fff;border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-bottom:24px}
-  .auto-banner .big{font-size:30px;font-weight:800}
-  .auto-banner .txt{font-size:14px;opacity:.92}
+  .auto-banner .big{font-size:30px;font-weight:800}.auto-banner .txt{font-size:14px;opacity:.92}
   .dash-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:22px;align-items:start}
   table{width:100%;border-collapse:collapse}
   thead th{text-align:left;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);padding:12px 14px;border-bottom:1px solid var(--line)}
   tbody td{padding:13px 14px;font-size:13px;border-bottom:1px solid var(--line)}
   tbody tr:last-child td{border-bottom:0}
   .st{font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;display:inline-block}
-  .st.queue{background:#EEF1F5;color:#5A6573}
-  .st.print{background:#E5F3FB;color:#1E8FC4}
-  .st.bind{background:#FBF1DC;color:#B5841A}
-  .st.ready{background:#E4F6E4;color:#2F8F3F}
+  .st.queue{background:#EEF1F5;color:#5A6573}.st.print{background:#E5F3FB;color:#1E8FC4}
+  .st.bind{background:#FBF1DC;color:#B5841A}.st.ready{background:#E4F6E4;color:#2F8F3F}
+  .st.deliver{background:#EFE7FB;color:#6A3FB0}
   .chart{display:flex;align-items:flex-end;gap:8px;height:150px;padding:10px 4px 0}
-  .bar{flex:1;background:linear-gradient(180deg,var(--blue),#7FCDEC);border-radius:6px 6px 0 0;position:relative;transition:.3s}
-  .bar:hover{filter:brightness(1.08)}
+  .bar{flex:1;background:linear-gradient(180deg,var(--blue),#7FCDEC);border-radius:6px 6px 0 0;position:relative}
   .bar span{position:absolute;bottom:-22px;left:0;right:0;text-align:center;font-size:10px;color:var(--slate)}
   .legend-note{font-size:12px;color:var(--slate);margin-top:30px;text-align:center}
 
-  /* ---------- AI chat ---------- */
-  .chat{position:fixed;right:24px;bottom:24px;width:340px;z-index:50;box-shadow:var(--shadow);border-radius:18px;overflow:hidden;border:1px solid var(--line)}
-  .chat-head{background:var(--ink);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px}
+  /* Chat (collapsible) */
+  .chat-wrap{position:fixed;right:24px;bottom:24px;z-index:50}
+  .chat{width:340px;box-shadow:var(--shadow);border-radius:18px;overflow:hidden;border:1px solid var(--line);transform-origin:bottom right;transition:.18s}
+  .chat-head{background:var(--ink);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;cursor:pointer}
   .chat-head .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--yellow));display:grid;place-items:center;font-weight:800;color:#fff;font-size:14px}
-  .chat-head b{font-size:14px}
-  .chat-head small{font-size:11px;opacity:.7;display:block}
-  .chat-body{background:#fff;padding:16px;display:grid;gap:10px;max-height:300px}
+  .chat-head b{font-size:14px}.chat-head small{font-size:11px;opacity:.7;display:block}
+  .chat-head .min{margin-left:auto;background:rgba(255,255,255,.15);border:0;color:#fff;width:26px;height:26px;border-radius:7px;cursor:pointer;font-size:16px;line-height:1}
+  .chat-body{background:#fff;padding:16px;display:grid;gap:10px;max-height:300px;overflow:auto}
   .msg{font-size:13px;padding:10px 13px;border-radius:14px;max-width:85%}
   .msg.bot{background:var(--bg);border-bottom-left-radius:4px}
   .msg.user{background:var(--blue);color:#fff;justify-self:end;border-bottom-right-radius:4px}
-  .msg.bot b{color:var(--ink)}
   .chat-input{display:flex;border-top:1px solid var(--line);background:#fff}
   .chat-input input{flex:1;border:0;padding:13px 15px;font:inherit;font-size:13px;outline:none}
   .chat-input button{border:0;background:var(--blue);color:#fff;padding:0 16px;cursor:pointer;font-weight:700}
+  .chat-launcher{display:none;align-items:center;gap:10px;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 18px 12px 14px;box-shadow:var(--shadow);cursor:pointer;font:inherit;font-weight:700;font-size:14px}
+  .chat-launcher .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--yellow));display:grid;place-items:center;font-weight:800;font-size:14px}
+  .chat-launcher .nd{position:absolute;top:-3px;left:30px;width:16px;height:16px;border-radius:50%;background:#E5484D;color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center;border:2px solid #fff}
+  .chat-wrap.collapsed .chat{display:none}
+  .chat-wrap.collapsed .chat-launcher{display:inline-flex;position:relative}
 
   footer{max-width:1180px;margin:0 auto;padding:30px 22px;color:var(--slate);font-size:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
   .concept-tag{position:fixed;left:0;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left;background:var(--ink);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:5px 12px;border-radius:0 0 6px 6px;z-index:60}
 
   @media(max-width:980px){
-    .builder,.dash-grid{grid-template-columns:1fr}
+    .builder,.dash-grid,.faq-grid{grid-template-columns:1fr}
     .feat-grid,.kpis{grid-template-columns:repeat(2,1fr)}
+    .stock-grid{grid-template-columns:repeat(3,1fr)}
     .rail{position:static}
-    .chat{display:none}
   }
+  @media(max-width:560px){.stock-grid{grid-template-columns:repeat(2,1fr)}.chat{width:calc(100vw - 32px)}}
 </style>
 </head>
 <body>
 
 <div class="concept-tag">CONCEPT MOCKUP</div>
 
-<!-- ===== TOP BAR ===== -->
+<!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-inner">
     <div class="logo">
       <svg class="logo-mark" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15"
-                stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
-        <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15"
-                stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#5CB947" stroke-width="15" stroke-dasharray="96 130" stroke-linecap="round" transform="rotate(-90 50 50)"/>
+        <circle cx="50" cy="50" r="36" fill="none" stroke="#F4C81E" stroke-width="15" stroke-dasharray="96 130" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 50 50)"/>
         <circle cx="50" cy="50" r="13" fill="#fff" stroke="#E7EAEF" stroke-width="2"/>
       </svg>
-      <div class="logo-text">
-        <span class="logo-top">PHOTOCOPY BUREAU</span>
-        <span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span>
-      </div>
+      <div class="logo-text"><span class="logo-top">PHOTOCOPY BUREAU</span><span class="logo-main"><span class="b">copy</span><span class="k">serv</span></span></div>
       <span class="logo-ltd">LIMITED</span>
     </div>
-
-    <div class="switch">
-      <button id="tabCustomer" class="active" onclick="showView('customer')">Customer Portal</button>
-      <button id="tabShop" onclick="showView('shop')">Shop Dashboard</button>
+    <div class="switch-wrap">
+      <div class="switch-lbl">Demo<br>preview</div>
+      <div class="switch">
+        <button id="tabCustomer" class="active" onclick="showView('customer')">Customer Portal</button>
+        <button id="tabShop" onclick="showView('shop')">🔒 Shop Dashboard <span style="font-weight:500;opacity:.7">(staff)</span></button>
+      </div>
     </div>
     <div class="pill-live"><span class="dot"></span>AI Desk online</div>
   </div>
+  <div class="demo-strip">👁 <b>Demo only:</b> your customers only ever see the <b>Customer Portal</b>. The Shop Dashboard is staff-only and sits behind a private login — this toggle is just so you can preview both sides.</div>
 </div>
 
-<!-- ============================================================= -->
-<!-- =====================  CUSTOMER VIEW  ======================== -->
-<!-- ============================================================= -->
+<!-- ===================== CUSTOMER VIEW ===================== -->
 <div id="view-customer">
   <div class="wrap">
 
-    <!-- HERO -->
     <div class="hero">
       <h1>Print anything. Skip the queue.</h1>
-      <p>Upload your file, choose your finish, pay online and get a text the second it's ready for pickup. No waiting at the counter — Copyserv's AI desk handles it 24/7.</p>
+      <p>Upload your file, choose your finish, add any stationery you need, then collect or get it delivered. Pay online and we'll message you the moment it's ready — Copyserv's AI desk handles it 24/7.</p>
       <div class="cta">
         <button class="btn btn-primary" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">📄 Start your order</button>
         <button class="btn btn-ghost">Track an existing order</button>
       </div>
       <div class="trust">
-        <span>⚡ Instant AI price quote</span>
-        <span>🔍 Free file health check</span>
-        <span>📲 WhatsApp & SMS updates</span>
-        <span>💳 Card · Revolut · Apple Pay</span>
+        <span>⚡ Instant AI price quote</span><span>🔍 Free file health check</span>
+        <span>🚚 Delivery across Malta &amp; Gozo</span><span>💳 Card · Revolut · Apple Pay</span>
       </div>
     </div>
 
-    <!-- ORDER BUILDER -->
+    <!-- BUILDER -->
     <div id="builder">
       <div class="section-label">Self-service ordering</div>
       <h2 class="title">Build your print job</h2>
       <p class="sub">Everything the front desk used to ask — now answered by the customer in 60 seconds.</p>
 
       <div class="steps">
-        <div class="step done"><span class="num">✓</span> Upload</div><span class="arr">›</span>
+        <div class="step done"><span class="num">1</span> Upload</div><span class="arr">›</span>
         <div class="step active"><span class="num">2</span> Configure</div><span class="arr">›</span>
         <div class="step"><span class="num">3</span> Preview &amp; approve</div><span class="arr">›</span>
         <div class="step"><span class="num">4</span> Pay</div>
       </div>
 
       <div class="builder">
-        <!-- LEFT: config -->
+        <!-- LEFT -->
         <div class="card panel">
+          <div class="drop" id="dropZone">
+            <div class="ic">⬆</div>
+            <strong>Drop your PDF here, or click to browse</strong>
+            <small>Real preview for PDFs · we also accept Word, PowerPoint &amp; images at checkout</small>
+            <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden>
+          </div>
+
           <div class="filecard">
             <div class="thumb"></div>
-            <div class="meta">
-              <b>Dissertation_Final.pdf</b>
-              <div>4.2 MB · uploaded just now</div>
-            </div>
-            <span class="st ready">Print-ready ✓</span>
+            <div class="meta"><b id="fileName">Dissertation_Final.pdf</b><div id="fileMeta">example file · drop your own PDF above to try it live</div></div>
+            <span class="st ready" id="fileStatus">Print-ready ✓</span>
           </div>
 
           <div class="ai-scan">
-            <div class="head">🤖 AI file check complete</div>
-            <ul>
+            <div class="head">🤖 <span id="scanHead">AI file check complete</span></div>
+            <ul id="scanList">
               <li><span class="tick">✓</span> Detected <b>&nbsp;142 pages</b>&nbsp; — 124 black &amp; white, 18 colour</li>
-              <li><span class="tick">✓</span> A4 · all fonts embedded · 300 dpi images</li>
-              <li class="warn"><span class="tick">⚠</span> Page 47 has text near the trim edge — we'll auto-scale 2% to fit</li>
-              <li><span class="tick">✓</span> No blank or duplicate pages found</li>
+              <li><span class="tick">✓</span> A4 · fonts embedded · print-ready</li>
+              <li class="warn"><span class="tick">⚠</span> This is an example — drop your own PDF for a live preview &amp; price</li>
             </ul>
           </div>
 
           <hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
 
-          <div class="opt-group">
-            <label>Colour</label>
+          <div class="opt-group"><label>Colour</label>
             <div class="opt-row" data-group="colour">
-              <div class="chip sel" data-v="auto" data-meta="Detected mix">Auto (mixed)<small>18 colour pages</small></div>
-              <div class="chip" data-v="bw" data-meta="All B&amp;W">All B&amp;W<small>cheapest</small></div>
-              <div class="chip" data-v="colour" data-meta="All colour">All colour<small>premium</small></div>
+              <div class="chip sel" data-v="auto">Auto (mixed)<small id="autoMeta">18 colour pages</small></div>
+              <div class="chip" data-v="bw">All B&amp;W<small>cheapest</small></div>
+              <div class="chip" data-v="colour">All colour<small>premium</small></div>
             </div>
           </div>
-
-          <div class="opt-group">
-            <label>Sides</label>
+          <div class="opt-group"><label>Sides</label>
             <div class="opt-row" data-group="sides">
               <div class="chip sel" data-v="double">Double-sided<small>save paper</small></div>
               <div class="chip" data-v="single">Single-sided</div>
             </div>
           </div>
-
-          <div class="opt-group">
-            <label>Paper</label>
+          <div class="opt-group"><label>Paper</label>
             <div class="opt-row" data-group="paper">
               <div class="chip sel" data-v="80" data-add="0">80 gsm<small>standard</small></div>
               <div class="chip" data-v="100" data-add="0.02">100 gsm<small>+€0.02/pg</small></div>
               <div class="chip" data-v="160" data-add="0.06">160 gsm card<small>+€0.06/pg</small></div>
             </div>
           </div>
-
-          <div class="opt-group">
-            <label>Binding</label>
+          <div class="opt-group"><label>Binding</label>
             <div class="opt-row" data-group="binding">
               <div class="chip" data-v="none" data-add="0">Loose<small>€0</small></div>
               <div class="chip" data-v="staple" data-add="0.30">Stapled<small>€0.30</small></div>
@@ -359,28 +346,25 @@
               <div class="chip" data-v="thermal" data-add="3.50">Thermal hardback<small>€3.50</small></div>
             </div>
           </div>
-
           <div class="opt-group" style="display:flex;justify-content:space-between;align-items:center">
             <label style="margin:0">Number of copies</label>
-            <div class="stepper">
-              <button onclick="bump(-1)">−</button>
-              <input id="copies" value="1" readonly>
-              <button onclick="bump(1)">+</button>
-            </div>
+            <div class="stepper"><button onclick="bump(-1)">−</button><input id="copies" value="1" readonly><button onclick="bump(1)">+</button></div>
           </div>
         </div>
 
-        <!-- RIGHT: preview + price -->
+        <!-- RIGHT RAIL -->
         <div class="rail">
           <div class="card preview-card">
-            <h4>Live preview</h4>
+            <h4>Live preview <span id="liveTag" style="color:var(--slate);font-weight:600;text-transform:none;letter-spacing:0">example</span></h4>
             <div class="doc-preview">
-              <div class="pages">
-                <div class="pg"></div>
-                <div class="pg"></div>
-                <div class="pg front"><div class="ln"></div><div class="ln s"></div><div class="ln"></div><div class="ln s"></div></div>
-              </div>
+              <div class="pages" id="fauxPages"><div class="pg"></div><div class="pg"></div><div class="pg"></div></div>
+              <canvas id="pdfCanvas"></canvas>
               <span class="badge-pages" id="badgePages">142 pp · A4</span>
+            </div>
+            <div class="page-nav" id="pageNav">
+              <button id="prevPg" onclick="flip(-1)">‹</button>
+              <span id="pageInd">Page 1 / 1</span>
+              <button id="nextPg" onclick="flip(1)">›</button>
             </div>
           </div>
 
@@ -388,48 +372,59 @@
             <div class="price-line"><span id="lblPages">Printing (142 pp × 1)</span><b id="cPages">€10.66</b></div>
             <div class="price-line"><span id="lblPaper">Paper — 80 gsm</span><b id="cPaper">included</b></div>
             <div class="price-line"><span id="lblBind">Binding — Spiral</span><b id="cBind">€2.50</b></div>
+            <div id="extraLines"></div>
+            <div class="price-line" id="deliveryLine" style="display:none"><span>🚚 Delivery — Malta &amp; Gozo</span><b>€4.00</b></div>
             <div class="price-line total"><span>Total<span class="vat">incl. 18% VAT</span></span><b id="cTotal">€13.16</b></div>
 
-            <div class="ready-by">🕒 <span>Ready for pickup by <b id="readyBy">14:30 today</b></span></div>
-
-            <button class="btn btn-primary" style="width:100%;justify-content:center">Pay &amp; send to print →</button>
-            <div class="pay-row">
-              <div class="pm">💳 Card</div>
-              <div class="pm">Revolut</div>
-              <div class="pm"> Pay</div>
-              <div class="pm">At pickup</div>
+            <div style="font-size:12px;font-weight:700;color:var(--slate);margin:14px 0 0">How would you like it?</div>
+            <div class="fulfil" data-group="fulfil">
+              <div class="chip sel" data-v="collect">🏬 Collect<small>free · locker or counter</small></div>
+              <div class="chip" data-v="deliver">🚚 Delivery<small>€4 · Malta &amp; Gozo</small></div>
             </div>
+
+            <div class="ready-by">🕒 <span id="readyMsg">Ready for pickup by <b id="readyBy">14:30 today</b></span></div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center">Pay &amp; send to print →</button>
+            <div class="pay-row"><div class="pm">💳 Card</div><div class="pm">Revolut</div><div class="pm"> Pay</div><div class="pm">At pickup</div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FEATURE STRIP -->
+    <!-- ADD TO ORDER / SHOP STOCK -->
+    <div style="margin-top:34px">
+      <div class="section-label">While you're here</div>
+      <h2 class="title">Add to your order</h2>
+      <p class="sub">Grab the stationery you need from the shop and we'll bundle it with your prints — one pickup, one delivery.</p>
+      <div class="stock-grid" id="stockGrid"></div>
+    </div>
+
+    <!-- FEATURES -->
     <div class="feat-grid">
-      <div class="card feat">
-        <div class="fic" style="background:#EAF7E5;color:#3F9B2E">🤖</div>
-        <h4>AI order desk</h4>
-        <p>Answers questions, quotes prices and takes orders by chat or WhatsApp — no staff needed.</p>
-      </div>
-      <div class="card feat">
-        <div class="fic" style="background:#E5F3FB;color:#1E8FC4">🔍</div>
-        <h4>Auto pre-flight</h4>
-        <p>Every file is checked for resolution, fonts and bleed before it prints — no wasted reprints.</p>
-      </div>
-      <div class="card feat">
-        <div class="fic" style="background:#FBF3DC;color:#B5841A">🔐</div>
-        <h4>Pickup lockers</h4>
-        <p>Collect with a one-time code from a smart locker, any time — even when the shop is shut.</p>
-      </div>
-      <div class="card feat">
-        <div class="fic" style="background:#F0E9FB;color:#7A4FD0">🔁</div>
-        <h4>1-tap reorder</h4>
-        <p>Students &amp; tutors re-print saved notes in seconds. Repeat business on autopilot.</p>
+      <div class="card feat"><div class="fic" style="background:#EAF7E5;color:#3F9B2E">🤖</div><h4>AI order desk</h4><p>Answers questions, quotes prices and takes orders by chat or WhatsApp — no staff needed.</p></div>
+      <div class="card feat"><div class="fic" style="background:#E5F3FB;color:#1E8FC4">🔍</div><h4>Auto pre-flight</h4><p>Every file is checked for resolution, fonts and bleed before it prints — no wasted reprints.</p></div>
+      <div class="card feat"><div class="fic" style="background:#FBF3DC;color:#B5841A">🔐</div><h4>Pickup lockers</h4><p>Collect with a one-time code from a smart locker, any time — even when the shop is shut.</p></div>
+      <div class="card feat"><div class="fic" style="background:#F0E9FB;color:#7A4FD0">🔁</div><h4>1-tap reorder</h4><p>Students &amp; tutors re-print saved notes in seconds. Repeat business on autopilot.</p></div>
+    </div>
+
+    <!-- FAQ -->
+    <div style="margin-top:38px">
+      <div class="section-label">Good to know</div>
+      <h2 class="title">Frequently asked questions</h2>
+      <p class="sub">The answers the front desk gives a hundred times a day — now self-serve.</p>
+      <div class="faq-grid">
+        <details class="faq" open><summary>What file formats can I upload?</summary><div class="ans"><b>PDF works best</b> — you'll see a live preview and an instant price. We also accept Word (.docx), PowerPoint (.pptx), Pages, and images (JPG/PNG); we convert them to print-ready PDF automatically. Max file size 100&nbsp;MB.</div></details>
+        <details class="faq"><summary>How do you decide colour vs black &amp; white?</summary><div class="ans">Our system scans every page and only charges <b>colour for pages that actually contain colour</b>. You can override to all-B&amp;W or all-colour at any time. B&amp;W is €0.05/page, colour €0.25/page.</div></details>
+        <details class="faq"><summary>How long will my order take?</summary><div class="ans">Most jobs are ready in <b>30–60 minutes</b>. Large runs or hardback binding take a little longer. You'll always see a guaranteed "ready by" time <b>before</b> you pay, based on the shop's live workload.</div></details>
+        <details class="faq"><summary>Can you deliver, or do I collect?</summary><div class="ans">Both. <b>Collect free</b> from the counter or a 24/7 smart locker, or get it <b>delivered anywhere in Malta &amp; Gozo for €4</b>. You choose at checkout.</div></details>
+        <details class="faq"><summary>What binding and paper can I choose?</summary><div class="ans">Binding: loose, stapled, comb, spiral or thermal hardback. Paper: 80gsm standard, 100gsm premium or 160gsm card. Add lamination or printed covers as options.</div></details>
+        <details class="faq"><summary>How do I pay?</summary><div class="ans">Securely online by <b>card, Revolut, Apple Pay or Google Pay</b> — or choose <b>pay at pickup</b>. You get a receipt by email and WhatsApp.</div></details>
+        <details class="faq"><summary>Is my file private and secure?</summary><div class="ans">Yes. Files are encrypted, used only to produce your order, and <b>automatically deleted after collection</b>. We never share them.</div></details>
+        <details class="faq"><summary>Do you handle bulk, student or school orders?</summary><div class="ans">Absolutely — <b>bulk discounts</b> for large runs and <b>monthly invoiced accounts</b> for schools, colleges and tutors. Ask the AI desk to set one up.</div></details>
       </div>
     </div>
 
     <!-- TRACKER -->
-    <div class="card tracker" style="margin-top:26px">
+    <div class="card tracker" style="margin-top:34px">
       <div class="section-label">Order #CS-2048</div>
       <h2 class="title" style="font-size:20px">Your order is being printed</h2>
       <div class="track-line">
@@ -439,17 +434,19 @@
         <div class="tnode"><div class="tc">📕</div><small>Binding</small></div>
         <div class="tnode"><div class="tc">📦</div><small>Ready</small></div>
       </div>
-      <p class="sub" style="text-align:center;margin:18px 0 0">We'll WhatsApp you the locker code the moment it's ready — estimated <b>14:30 today</b>.</p>
+      <p class="sub" style="text-align:center;margin:18px 0 0">We'll WhatsApp you the locker code (or the driver's ETA) the moment it's ready — estimated <b>14:30 today</b>.</p>
     </div>
-
   </div>
 </div>
 
-<!-- ============================================================= -->
-<!-- ======================  SHOP VIEW  =========================== -->
-<!-- ============================================================= -->
+<!-- ===================== SHOP VIEW ===================== -->
 <div id="view-shop" class="hidden">
   <div class="wrap">
+    <div class="staff-banner">
+      <span class="lk">🔒</span>
+      <div class="t"><b>Staff area — customers never see this screen.</b><br>In the live system this sits behind a private staff login. It's only shown here so you can preview what your team sees. The public portal has no link to it.</div>
+    </div>
+
     <div class="section-label">Owner view</div>
     <h2 class="title">B2C control desk</h2>
     <p class="sub">The whole walk-in counter, running itself. You just print and bind what lands in the queue.</p>
@@ -467,46 +464,40 @@
     </div>
 
     <div class="dash-grid">
-      <!-- queue -->
       <div class="card" style="padding:6px 6px 0">
         <div style="padding:16px 16px 8px;display:flex;justify-content:space-between;align-items:center">
           <b style="font-size:15px">Live print queue</b>
           <span class="pill-live"><span class="dot"></span>auto-sorted by pickup time</span>
         </div>
         <table>
-          <thead><tr><th>Order</th><th>Job</th><th>Pages</th><th>Ready by</th><th>Status</th></tr></thead>
+          <thead><tr><th>Order</th><th>Job</th><th>Pages</th><th>Fulfil</th><th>Status</th></tr></thead>
           <tbody>
-            <tr><td><b>#CS-2048</b><br><small style="color:var(--slate)">M. Borg</small></td><td>Dissertation · spiral</td><td>142</td><td>14:30</td><td><span class="st print">Printing</span></td></tr>
-            <tr><td><b>#CS-2049</b><br><small style="color:var(--slate)">Junior College</small></td><td>Lecture notes ×30</td><td>24</td><td>15:00</td><td><span class="st queue">In queue</span></td></tr>
-            <tr><td><b>#CS-2050</b><br><small style="color:var(--slate)">A. Vella</small></td><td>CV · 160gsm card</td><td>2</td><td>13:45</td><td><span class="st bind">Binding</span></td></tr>
-            <tr><td><b>#CS-2051</b><br><small style="color:var(--slate)">St Aloysius</small></td><td>Exam papers ×120</td><td>8</td><td>16:30</td><td><span class="st queue">In queue</span></td></tr>
-            <tr><td><b>#CS-2047</b><br><small style="color:var(--slate)">R. Camilleri</small></td><td>Wedding invites</td><td>1</td><td>Ready</td><td><span class="st ready">In locker</span></td></tr>
+            <tr><td><b>#CS-2048</b><br><small style="color:var(--slate)">M. Borg</small></td><td>Dissertation · spiral</td><td>142</td><td>Locker</td><td><span class="st print">Printing</span></td></tr>
+            <tr><td><b>#CS-2049</b><br><small style="color:var(--slate)">Junior College</small></td><td>Lecture notes ×30</td><td>24</td><td>Delivery</td><td><span class="st queue">In queue</span></td></tr>
+            <tr><td><b>#CS-2050</b><br><small style="color:var(--slate)">A. Vella</small></td><td>CV · 160gsm + pens</td><td>2</td><td>Counter</td><td><span class="st bind">Binding</span></td></tr>
+            <tr><td><b>#CS-2051</b><br><small style="color:var(--slate)">St Aloysius</small></td><td>Exam papers ×120</td><td>8</td><td>Delivery</td><td><span class="st queue">In queue</span></td></tr>
+            <tr><td><b>#CS-2047</b><br><small style="color:var(--slate)">R. Camilleri</small></td><td>Wedding invites</td><td>1</td><td>Gozo 🚚</td><td><span class="st deliver">Out for delivery</span></td></tr>
           </tbody>
         </table>
       </div>
 
-      <!-- chart + flags -->
-      <div class="grid">
+      <div style="display:grid;gap:22px">
         <div class="card" style="padding:20px">
           <b style="font-size:15px">Orders by hour</b>
           <div class="chart">
-            <div class="bar" style="height:30%"><span>8a</span></div>
-            <div class="bar" style="height:55%"><span>9a</span></div>
-            <div class="bar" style="height:80%"><span>10a</span></div>
-            <div class="bar" style="height:65%"><span>11a</span></div>
-            <div class="bar" style="height:95%"><span>12p</span></div>
-            <div class="bar" style="height:70%"><span>1p</span></div>
-            <div class="bar" style="height:45%"><span>2p</span></div>
-            <div class="bar" style="height:60%"><span>3p</span></div>
+            <div class="bar" style="height:30%"><span>8a</span></div><div class="bar" style="height:55%"><span>9a</span></div>
+            <div class="bar" style="height:80%"><span>10a</span></div><div class="bar" style="height:65%"><span>11a</span></div>
+            <div class="bar" style="height:95%"><span>12p</span></div><div class="bar" style="height:70%"><span>1p</span></div>
+            <div class="bar" style="height:45%"><span>2p</span></div><div class="bar" style="height:60%"><span>3p</span></div>
           </div>
-          <p class="legend-note">Capacity-aware quoting auto-pushes promised times out at the 12pm rush — no overpromising.</p>
+          <p class="legend-note">Capacity-aware quoting pushes promised times out at the 12pm rush — no overpromising.</p>
         </div>
         <div class="card" style="padding:20px">
           <b style="font-size:15px">Needs a human (3)</b>
           <div style="margin-top:12px;display:grid;gap:10px">
-            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2052</b> — 380-page full textbook. Possible copyright limit — review before printing.</span></div>
-            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2046</b> — customer asked for a custom A1 poster size not in the menu.</span></div>
-            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span> <span><b>#CS-2044</b> — payment failed twice; AI sent a Revolut link, awaiting.</span></div>
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span><span><b>#CS-2052</b> — 380-page full textbook. Possible copyright limit — review before printing.</span></div>
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span><span><b>#CS-2046</b> — customer asked for a custom A1 poster size not in the menu.</span></div>
+            <div style="display:flex;gap:10px;font-size:13px;align-items:flex-start"><span style="color:var(--warn)">⚠</span><span><b>#CS-2044</b> — payment failed twice; AI sent a Revolut link, awaiting.</span></div>
           </div>
         </div>
       </div>
@@ -514,21 +505,22 @@
   </div>
 </div>
 
-<!-- AI CHAT WIDGET -->
-<div class="chat">
-  <div class="chat-head">
-    <div class="av">C</div>
-    <div><b>Copyserv AI Desk</b><small>Typically replies instantly</small></div>
+<!-- CHAT (collapsible) -->
+<div class="chat-wrap" id="chatWrap">
+  <div class="chat">
+    <div class="chat-head" onclick="toggleChat()">
+      <div class="av">C</div>
+      <div><b>Copyserv AI Desk</b><small>Typically replies instantly</small></div>
+      <button class="min" onclick="event.stopPropagation();toggleChat()" title="Minimise">—</button>
+    </div>
+    <div class="chat-body">
+      <div class="msg bot">Hi! 👋 Drop your file here or tell me what you need printed.</div>
+      <div class="msg user">200-page dissertation, hard binding, delivered to Gozo by tomorrow?</div>
+      <div class="msg bot">Done! 200 pp B&amp;W + thermal hardback + €4 Gozo delivery = <b>€17.50</b>. Upload now and it'll reach you by <b>11:00 tomorrow</b>. Want me to start it?</div>
+    </div>
+    <div class="chat-input"><input placeholder="Type a message…" readonly><button>➤</button></div>
   </div>
-  <div class="chat-body">
-    <div class="msg bot">Hi! 👋 Drop your file here or tell me what you need printed.</div>
-    <div class="msg user">200-page dissertation, hard binding, by tomorrow morning?</div>
-    <div class="msg bot">Done! 200 pp B&amp;W + thermal hardback = <b>€13.50</b>. Upload now and it'll be in your pickup locker by <b>11:00 tomorrow</b>. Want me to start it?</div>
-  </div>
-  <div class="chat-input">
-    <input placeholder="Type a message…" readonly>
-    <button>➤</button>
-  </div>
+  <button class="chat-launcher" onclick="toggleChat()"><span class="av">C</span> Chat to us<span class="nd">1</span></button>
 </div>
 
 <footer>
@@ -544,76 +536,221 @@
 </footer>
 
 <script>
-  /* ---- view switch ---- */
+  if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}
+
+  /* view switch */
   function showView(v){
-    document.getElementById('view-customer').classList.toggle('hidden', v!=='customer');
-    document.getElementById('view-shop').classList.toggle('hidden', v!=='shop');
-    document.getElementById('tabCustomer').classList.toggle('active', v==='customer');
-    document.getElementById('tabShop').classList.toggle('active', v==='shop');
+    document.getElementById('view-customer').classList.toggle('hidden',v!=='customer');
+    document.getElementById('view-shop').classList.toggle('hidden',v!=='shop');
+    document.getElementById('tabCustomer').classList.toggle('active',v==='customer');
+    document.getElementById('tabShop').classList.toggle('active',v==='shop');
     window.scrollTo({top:0,behavior:'smooth'});
   }
+  /* chat */
+  function toggleChat(){document.getElementById('chatWrap').classList.toggle('collapsed');}
+  if(innerWidth<700)document.getElementById('chatWrap').classList.add('collapsed');
 
-  /* ---- pricing model ---- */
-  const BASE={bw:0.05, colour:0.25};
-  const TOTAL_PAGES=142, COLOUR_PAGES=18;
-  const state={colour:'auto', sides:'double', paper:'80', paperAdd:0, binding:'spiral', bindAdd:2.50, copies:1};
+  /* pricing model */
+  const BASE={bw:0.05,colour:0.25};
+  const state={doc:{name:'Dissertation_Final.pdf',pages:142,colourPages:18,size:'A4',real:false},
+    pdf:null,page:1,colour:'auto',sides:'double',paper:'80',paperAdd:0,binding:'spiral',bindAdd:2.50,copies:1,
+    fulfil:'collect',stock:{}};
 
-  function pagesCost(){
-    let bwPages, colPages;
-    if(state.colour==='auto'){ colPages=COLOUR_PAGES; bwPages=TOTAL_PAGES-COLOUR_PAGES; }
-    else if(state.colour==='bw'){ colPages=0; bwPages=TOTAL_PAGES; }
-    else { colPages=TOTAL_PAGES; bwPages=0; }
-    let per = bwPages*BASE.bw + colPages*BASE.colour;
-    per += TOTAL_PAGES*state.paperAdd;            // paper surcharge per page
-    return per;
-  }
+  const STOCK=[
+    {id:'pen',em:'🖊️',nm:'Ballpoint pen',pr:0.40},
+    {id:'foolscap',em:'📒',nm:'Foolscap pad',pr:1.20},
+    {id:'highlighter',em:'🖍️',nm:'Highlighter',pr:0.80},
+    {id:'bcard',em:'🎂',nm:'Birthday card',pr:2.50},
+    {id:'ream',em:'📄',nm:'A4 ream (500)',pr:4.50},
+    {id:'folder',em:'🗂️',nm:'Plastic folder',pr:0.90},
+    {id:'marker',em:'🖊️',nm:'Permanent marker',pr:1.10},
+    {id:'glue',em:'🧴',nm:'Glue stick',pr:0.95},
+    {id:'stapler',em:'📎',nm:'Stapler',pr:3.20},
+    {id:'envelope',em:'✉️',nm:'Envelopes (×10)',pr:1.50}
+  ];
   const fmt=n=>'€'+n.toFixed(2);
 
-  function recalc(){
-    const printing = pagesCost()*state.copies;
-    const binding  = state.bindAdd*state.copies;
-    const net      = printing + binding;
-    const total    = net*1.18;                    // 18% VAT (Malta)
-
-    document.getElementById('lblPages').textContent = `Printing (${TOTAL_PAGES} pp × ${state.copies})`;
-    document.getElementById('cPages').textContent   = fmt(printing);
-    const paperLbl = {'80':'80 gsm','100':'100 gsm','160':'160 gsm card'}[state.paper];
-    document.getElementById('lblPaper').textContent = 'Paper — '+paperLbl;
-    document.getElementById('cPaper').textContent   = state.paperAdd? fmt(TOTAL_PAGES*state.paperAdd*state.copies):'included';
-    const bindLbl = {none:'Loose',staple:'Stapled',comb:'Comb',spiral:'Spiral',thermal:'Thermal hardback'}[state.binding];
-    document.getElementById('lblBind').textContent  = 'Binding — '+bindLbl;
-    document.getElementById('cBind').textContent    = state.bindAdd? fmt(binding):'—';
-    document.getElementById('cTotal').textContent   = fmt(total);
-    document.getElementById('badgePages').textContent = `${TOTAL_PAGES} pp · A4`;
-
-    // simple capacity-aware "ready by"
-    const mins = 25 + state.copies*4 + (state.binding==='thermal'?40:state.binding==='spiral'?15:5);
-    const t=new Date(2026,5,8,13,5); t.setMinutes(t.getMinutes()+mins);
-    let hh=t.getHours(), mm=String(t.getMinutes()).padStart(2,'0');
-    document.getElementById('readyBy').textContent = `${hh}:${mm} today`;
+  /* render stock grid */
+  function renderStock(){
+    const g=document.getElementById('stockGrid');g.innerHTML='';
+    STOCK.forEach(s=>{
+      const q=state.stock[s.id]||0;
+      const card=document.createElement('div');
+      card.className='stock-card'+(q>0?' in':'');
+      card.innerHTML='<div class="em">'+s.em+'</div><div class="nm">'+s.nm+'</div><div class="pr">'+fmt(s.pr)+'</div>'+
+        (q>0?'<div class="qty"><button onclick="addStock(\''+s.id+'\',-1)">−</button><span>'+q+'</span><button onclick="addStock(\''+s.id+'\',1)">+</button></div>'
+            :'<button class="add-btn" onclick="addStock(\''+s.id+'\',1)">+ Add</button>');
+      g.appendChild(card);
+    });
+  }
+  function addStock(id,d){
+    const q=(state.stock[id]||0)+d;
+    if(q<=0)delete state.stock[id];else state.stock[id]=Math.min(99,q);
+    renderStock();recalc();
   }
 
-  /* ---- chip selection ---- */
-  document.querySelectorAll('.opt-row').forEach(row=>{
+  function pagesCost(){
+    const d=state.doc;let bw,col;
+    if(state.colour==='auto'){col=d.colourPages;bw=d.pages-d.colourPages;}
+    else if(state.colour==='bw'){col=0;bw=d.pages;}
+    else{col=d.pages;bw=0;}
+    return bw*BASE.bw+col*BASE.colour+d.pages*state.paperAdd;
+  }
+
+  function recalc(){
+    const d=state.doc;
+    const printing=pagesCost()*state.copies;
+    const binding=state.bindAdd*state.copies;
+    let extras=0;const exHtml=[];
+    STOCK.forEach(s=>{const q=state.stock[s.id];if(q){extras+=s.pr*q;exHtml.push('<div class="price-line"><span>'+q+'× '+s.nm+'</span><b>'+fmt(s.pr*q)+'</b></div>');}});
+    const delivery=state.fulfil==='deliver'?4:0;
+    const net=printing+binding+extras+delivery;
+    const total=net*1.18;
+
+    document.getElementById('lblPages').textContent='Printing ('+d.pages+' pp × '+state.copies+')';
+    document.getElementById('cPages').textContent=fmt(printing);
+    document.getElementById('lblPaper').textContent='Paper — '+({'80':'80 gsm','100':'100 gsm','160':'160 gsm card'}[state.paper]);
+    document.getElementById('cPaper').textContent=state.paperAdd?fmt(d.pages*state.paperAdd*state.copies):'included';
+    document.getElementById('lblBind').textContent='Binding — '+({none:'Loose',staple:'Stapled',comb:'Comb',spiral:'Spiral',thermal:'Thermal hardback'}[state.binding]);
+    document.getElementById('cBind').textContent=state.bindAdd?fmt(binding):'—';
+    document.getElementById('extraLines').innerHTML=exHtml.join('');
+    document.getElementById('deliveryLine').style.display=delivery?'flex':'none';
+    document.getElementById('cTotal').textContent=fmt(total);
+    document.getElementById('badgePages').textContent=d.pages+' pp · '+d.size;
+    document.getElementById('autoMeta').textContent=d.colourPages+' colour pages';
+
+    const mins=25+state.copies*4+(state.binding==='thermal'?40:state.binding==='spiral'?15:5);
+    const t=new Date(2026,5,8,13,5);t.setMinutes(t.getMinutes()+mins);
+    const hhmm=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');
+    if(state.fulfil==='deliver')
+      document.getElementById('readyMsg').innerHTML='Delivered across Malta &amp; Gozo by <b>'+hhmm+' today</b>';
+    else
+      document.getElementById('readyMsg').innerHTML='Ready for pickup by <b>'+hhmm+' today</b>';
+  }
+
+  /* option chips */
+  document.querySelectorAll('.opt-row,.fulfil').forEach(row=>{
     row.addEventListener('click',e=>{
-      const chip=e.target.closest('.chip'); if(!chip) return;
-      row.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));
-      chip.classList.add('sel');
-      const g=row.dataset.group, v=chip.dataset.v;
-      if(g==='colour') state.colour=v;
-      if(g==='sides')  state.sides=v;
-      if(g==='paper'){ state.paper=v; state.paperAdd=parseFloat(chip.dataset.add); }
-      if(g==='binding'){ state.binding=v; state.bindAdd=parseFloat(chip.dataset.add); }
+      const chip=e.target.closest('.chip');if(!chip)return;
+      row.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel'));chip.classList.add('sel');
+      const g=row.dataset.group,v=chip.dataset.v;
+      if(g==='colour')state.colour=v;
+      if(g==='sides')state.sides=v;
+      if(g==='paper'){state.paper=v;state.paperAdd=parseFloat(chip.dataset.add);}
+      if(g==='binding'){state.binding=v;state.bindAdd=parseFloat(chip.dataset.add);}
+      if(g==='fulfil')state.fulfil=v;
       recalc();
     });
   });
+  function bump(d){state.copies=Math.max(1,Math.min(99,state.copies+d));document.getElementById('copies').value=state.copies;recalc();}
 
-  function bump(d){
-    state.copies=Math.max(1,Math.min(99,state.copies+d));
-    document.getElementById('copies').value=state.copies;
+  /* ---------- REAL PDF UPLOAD + PREVIEW ---------- */
+  const dz=document.getElementById('dropZone'),fi=document.getElementById('fileInput');
+  dz.addEventListener('click',()=>fi.click());
+  fi.addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0]);});
+  ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+  dz.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)handleFile(f);});
+
+  function handleFile(file){
+    if(!/pdf$/i.test(file.type)&&!/\.pdf$/i.test(file.name)){
+      alert("For a live preview, please drop a PDF. In the real system we'd also accept Word, PowerPoint and images and convert them automatically.");
+      return;
+    }
+    const r=new FileReader();
+    r.onload=()=>loadPdfFromData(new Uint8Array(r.result),file.name,file.size);
+    r.readAsArrayBuffer(file);
+  }
+
+  function sizeLabel(file){const mb=file/1048576;return (mb<1?(file/1024).toFixed(0)+' KB':mb.toFixed(1)+' MB');}
+  function pageSizeName(w,h){ // w,h in pt
+    const a=Math.min(w,h),b=Math.max(w,h),land=w>h?' landscape':'';
+    const near=(x,t)=>Math.abs(x-t)<14;
+    if(near(a,420)&&near(b,595))return 'A5'+land;
+    if(near(a,595)&&near(b,842))return 'A4'+land;
+    if(near(a,842)&&near(b,1191))return 'A3'+land;
+    if(near(a,612)&&near(b,792))return 'Letter'+land;
+    return Math.round(a/2.83)+'×'+Math.round(b/2.83)+'mm';
+  }
+
+  async function loadPdfFromData(data,name,bytes){
+    if(!window.pdfjsLib){alert('PDF engine still loading — try again in a second.');return;}
+    try{
+      const pdf=await pdfjsLib.getDocument({data}).promise;
+      state.pdf=pdf;state.page=1;
+      const p1=await pdf.getPage(1);
+      const vp=p1.getViewport({scale:1});
+      state.doc={name:name,pages:pdf.numPages,colourPages:0,size:pageSizeName(vp.width,vp.height),real:true};
+
+      document.getElementById('fileName').textContent=name;
+      document.getElementById('fileMeta').textContent=sizeLabel(bytes)+' · uploaded just now';
+      document.getElementById('fileStatus').textContent='Print-ready ✓';
+      document.getElementById('liveTag').textContent='your file';
+      document.getElementById('scanHead').textContent='AI file check complete';
+      document.getElementById('scanList').innerHTML=
+        '<li><span class="tick">✓</span> Detected <b>&nbsp;'+pdf.numPages+' pages</b>&nbsp; · '+state.doc.size+'</li>'+
+        '<li><span class="tick">⏳</span> <span id="colourScan">Scanning pages for colour…</span></li>'+
+        '<li><span class="tick">✓</span> Live preview ready — flip through your pages on the right →</li>';
+
+      document.getElementById('fauxPages').style.display='none';
+      document.getElementById('pdfCanvas').style.display='block';
+      document.getElementById('pageNav').style.display='flex';
+      await renderPage(1);
+      recalc();
+      analyseColour(pdf); // async, updates when done
+    }catch(err){console.error(err);alert('Could not read that PDF. It may be password-protected or corrupted.');}
+  }
+
+  async function renderPage(n){
+    const pdf=state.pdf;if(!pdf)return;
+    state.page=n;
+    const page=await pdf.getPage(n);
+    const canvas=document.getElementById('pdfCanvas'),ctx=canvas.getContext('2d');
+    const dpr=window.devicePixelRatio||1;
+    const targetW=300;
+    const base=page.getViewport({scale:1});
+    const vp=page.getViewport({scale:targetW/base.width});
+    canvas.width=vp.width*dpr;canvas.height=vp.height*dpr;
+    canvas.style.width=vp.width+'px';canvas.style.height=vp.height+'px';
+    await page.render({canvasContext:ctx,viewport:vp,transform:dpr!==1?[dpr,0,0,dpr,0,0]:null}).promise;
+    document.getElementById('pageInd').textContent='Page '+n+' / '+pdf.numPages;
+    document.getElementById('prevPg').disabled=n<=1;
+    document.getElementById('nextPg').disabled=n>=pdf.numPages;
+  }
+  function flip(d){const n=state.page+d;if(n>=1&&n<=state.pdf.numPages)renderPage(n);}
+
+  async function analyseColour(pdf){
+    const n=pdf.numPages;
+    const idx=[];
+    if(n<=18){for(let i=1;i<=n;i++)idx.push(i);}
+    else{for(let k=0;k<18;k++)idx.push(1+Math.round(k*(n-1)/17));}
+    let colourPages=0;
+    const off=document.createElement('canvas'),octx=off.getContext('2d',{willReadFrequently:true});
+    for(const i of idx){
+      try{
+        const page=await pdf.getPage(i);
+        const vp=page.getViewport({scale:0.3});
+        off.width=Math.max(1,Math.floor(vp.width));off.height=Math.max(1,Math.floor(vp.height));
+        await page.render({canvasContext:octx,viewport:vp}).promise;
+        const img=octx.getImageData(0,0,off.width,off.height).data;
+        let colourful=0,total=0;
+        for(let p=0;p<img.length;p+=16){ // sample every 4th pixel (4 bytes*4)
+          const r=img[p],g=img[p+1],b=img[p+2];
+          const mx=Math.max(r,g,b),mn=Math.min(r,g,b);
+          total++;
+          if(mx-mn>34&&mx>40)colourful++;
+        }
+        if(total&&colourful/total>0.004)colourPages++;
+      }catch(e){}
+    }
+    const est=Math.round(n*(colourPages/idx.length));
+    state.doc.colourPages=est;
+    const cs=document.getElementById('colourScan');
+    if(cs)cs.parentElement.innerHTML='<span class="tick">✓</span> '+(n-est)+' B&amp;W · <b>'+est+' colour</b> page'+(est===1?'':'s')+' detected'+(n>18?' (estimated from sample)':'');
     recalc();
   }
 
+  renderStock();
   recalc();
 </script>
 </body>
